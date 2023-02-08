@@ -73,13 +73,49 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""MouseClick"",
+                    ""name"": ""MouseClickLeft"",
                     ""type"": ""Button"",
                     ""id"": ""61d604d0-7387-4ade-86e1-6af95a2ec854"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseClickMiddle"",
+                    ""type"": ""Button"",
+                    ""id"": ""0ca28545-a74e-4cc1-980e-5756d13a71a7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseClickRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""d6a9467d-4810-40fa-b0fb-6071a1323413"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseScroll"",
+                    ""type"": ""Button"",
+                    ""id"": ""a866ea66-4f48-4837-bc64-80fbeaccd74b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseMoveDelta"",
+                    ""type"": ""Value"",
+                    ""id"": ""f5188e7d-f886-446d-bd4f-e706d1d5339a"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -376,7 +412,73 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""MouseClick"",
+                    ""action"": ""MouseClickLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6da6e356-897f-4e2b-bf66-f90788f48b2a"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MouseClickMiddle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""309033e7-689f-46fd-920e-4ce5ca9b76cf"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": ""Hold(duration=0.2),Tap"",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MouseClickRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Mouse scroll"",
+                    ""id"": ""2a64a607-d8e5-4483-abf5-a64ea2515581"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseScroll"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""c8d3c08f-fe3a-418d-8f3f-dc2981bdfc41"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MouseScroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""a2b5ff0e-d054-4590-b4ff-963cbc611236"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MouseScroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""585143f1-409a-4e7c-b5ed-7defba7aea09"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MouseMoveDelta"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -837,7 +939,11 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         m_Player_Orbit = m_Player.FindAction("Orbit", throwIfNotFound: true);
         m_Player_Zoom = m_Player.FindAction("Zoom", throwIfNotFound: true);
         m_Player_SpeedUp = m_Player.FindAction("SpeedUp", throwIfNotFound: true);
-        m_Player_MouseClick = m_Player.FindAction("MouseClick", throwIfNotFound: true);
+        m_Player_MouseClickLeft = m_Player.FindAction("MouseClickLeft", throwIfNotFound: true);
+        m_Player_MouseClickMiddle = m_Player.FindAction("MouseClickMiddle", throwIfNotFound: true);
+        m_Player_MouseClickRight = m_Player.FindAction("MouseClickRight", throwIfNotFound: true);
+        m_Player_MouseScroll = m_Player.FindAction("MouseScroll", throwIfNotFound: true);
+        m_Player_MouseMoveDelta = m_Player.FindAction("MouseMoveDelta", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -914,7 +1020,11 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Orbit;
     private readonly InputAction m_Player_Zoom;
     private readonly InputAction m_Player_SpeedUp;
-    private readonly InputAction m_Player_MouseClick;
+    private readonly InputAction m_Player_MouseClickLeft;
+    private readonly InputAction m_Player_MouseClickMiddle;
+    private readonly InputAction m_Player_MouseClickRight;
+    private readonly InputAction m_Player_MouseScroll;
+    private readonly InputAction m_Player_MouseMoveDelta;
     public struct PlayerActions
     {
         private @InputActions m_Wrapper;
@@ -924,7 +1034,11 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         public InputAction @Orbit => m_Wrapper.m_Player_Orbit;
         public InputAction @Zoom => m_Wrapper.m_Player_Zoom;
         public InputAction @SpeedUp => m_Wrapper.m_Player_SpeedUp;
-        public InputAction @MouseClick => m_Wrapper.m_Player_MouseClick;
+        public InputAction @MouseClickLeft => m_Wrapper.m_Player_MouseClickLeft;
+        public InputAction @MouseClickMiddle => m_Wrapper.m_Player_MouseClickMiddle;
+        public InputAction @MouseClickRight => m_Wrapper.m_Player_MouseClickRight;
+        public InputAction @MouseScroll => m_Wrapper.m_Player_MouseScroll;
+        public InputAction @MouseMoveDelta => m_Wrapper.m_Player_MouseMoveDelta;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -949,9 +1063,21 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @SpeedUp.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpeedUp;
                 @SpeedUp.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpeedUp;
                 @SpeedUp.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpeedUp;
-                @MouseClick.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseClick;
-                @MouseClick.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseClick;
-                @MouseClick.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseClick;
+                @MouseClickLeft.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseClickLeft;
+                @MouseClickLeft.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseClickLeft;
+                @MouseClickLeft.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseClickLeft;
+                @MouseClickMiddle.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseClickMiddle;
+                @MouseClickMiddle.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseClickMiddle;
+                @MouseClickMiddle.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseClickMiddle;
+                @MouseClickRight.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseClickRight;
+                @MouseClickRight.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseClickRight;
+                @MouseClickRight.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseClickRight;
+                @MouseScroll.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseScroll;
+                @MouseScroll.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseScroll;
+                @MouseScroll.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseScroll;
+                @MouseMoveDelta.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseMoveDelta;
+                @MouseMoveDelta.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseMoveDelta;
+                @MouseMoveDelta.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseMoveDelta;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -971,9 +1097,21 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @SpeedUp.started += instance.OnSpeedUp;
                 @SpeedUp.performed += instance.OnSpeedUp;
                 @SpeedUp.canceled += instance.OnSpeedUp;
-                @MouseClick.started += instance.OnMouseClick;
-                @MouseClick.performed += instance.OnMouseClick;
-                @MouseClick.canceled += instance.OnMouseClick;
+                @MouseClickLeft.started += instance.OnMouseClickLeft;
+                @MouseClickLeft.performed += instance.OnMouseClickLeft;
+                @MouseClickLeft.canceled += instance.OnMouseClickLeft;
+                @MouseClickMiddle.started += instance.OnMouseClickMiddle;
+                @MouseClickMiddle.performed += instance.OnMouseClickMiddle;
+                @MouseClickMiddle.canceled += instance.OnMouseClickMiddle;
+                @MouseClickRight.started += instance.OnMouseClickRight;
+                @MouseClickRight.performed += instance.OnMouseClickRight;
+                @MouseClickRight.canceled += instance.OnMouseClickRight;
+                @MouseScroll.started += instance.OnMouseScroll;
+                @MouseScroll.performed += instance.OnMouseScroll;
+                @MouseScroll.canceled += instance.OnMouseScroll;
+                @MouseMoveDelta.started += instance.OnMouseMoveDelta;
+                @MouseMoveDelta.performed += instance.OnMouseMoveDelta;
+                @MouseMoveDelta.canceled += instance.OnMouseMoveDelta;
             }
         }
     }
@@ -1108,7 +1246,11 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         void OnOrbit(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
         void OnSpeedUp(InputAction.CallbackContext context);
-        void OnMouseClick(InputAction.CallbackContext context);
+        void OnMouseClickLeft(InputAction.CallbackContext context);
+        void OnMouseClickMiddle(InputAction.CallbackContext context);
+        void OnMouseClickRight(InputAction.CallbackContext context);
+        void OnMouseScroll(InputAction.CallbackContext context);
+        void OnMouseMoveDelta(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
