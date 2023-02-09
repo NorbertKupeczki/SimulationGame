@@ -431,7 +431,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""309033e7-689f-46fd-920e-4ce5ca9b76cf"",
                     ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": ""Hold(duration=0.2),Tap"",
+                    ""interactions"": ""Hold(duration=0.15),Tap(duration=0.15)"",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""MouseClickRight"",

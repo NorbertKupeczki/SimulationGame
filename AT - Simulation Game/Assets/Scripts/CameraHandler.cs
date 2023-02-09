@@ -53,11 +53,15 @@ public class CameraHandler : MonoBehaviour
         _inputs.Player.SpeedUp.canceled += ctx => SpeedUpButton(ctx);
 
         _inputs.Player.MouseClickLeft.performed += ctx => MouseClickLeft(ctx);
+
         _inputs.Player.MouseClickMiddle.performed += ctx => MouseClickMiddle(ctx);
         _inputs.Player.MouseClickMiddle.canceled += ctx => MouseClickMiddle(ctx);
+
         _inputs.Player.MouseClickRight.performed += ctx => MouseClickRight(ctx);
         _inputs.Player.MouseClickRight.canceled += ctx => MouseClickRight(ctx);
+
         _inputs.Player.MouseScroll.performed += ctx => MouseScroll(ctx);
+
         _inputs.Player.MouseMoveDelta.performed += ctx => MouseDelta(ctx);
 
     }
@@ -128,7 +132,23 @@ public class CameraHandler : MonoBehaviour
 
     public void TestButton(InputAction.CallbackContext context)
     {
-        Debug.Log("Test button pressed" + context.ReadValueAsButton());
+        if (context.phase == InputActionPhase.Performed)
+        {
+            Debug.Log("Test button pressed" + context.ReadValueAsButton());
+            /*
+            if (Gamepad.current != null)
+                Debug.Log("Gamepad Id: "+Gamepad.current.deviceId);
+
+            if (Mouse.current != null)
+                Debug.Log("Mouse Id: " + Mouse.current.deviceId);
+
+            if (Keyboard.current != null)
+                Debug.Log("Keyboard Id: " + Keyboard.current.deviceId);
+
+            Debug.Log(context.control.path);
+            Debug.Log(context.control.device.deviceId);
+            */
+        }
     }
     #endregion
 
@@ -139,7 +159,7 @@ public class CameraHandler : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit raycastHit))
         {
             //Debug.Log(raycastHit.collider.gameObject.tag);
-            Instantiate(_particleSystem, raycastHit.point, Quaternion.identity);
+            //Instantiate(_particleSystem, raycastHit.point, Quaternion.identity);
             if (raycastHit.collider.gameObject.CompareTag("Selectable"))
             {
                 _marker.SetBuilding(raycastHit.collider.gameObject);
@@ -174,7 +194,6 @@ public class CameraHandler : MonoBehaviour
 
         if (context.interaction is TapInteraction && context.performed)
         {
-            Debug.Log("Cancel selection");
             _marker.CancelSelection();
         }
         else if (context.interaction is HoldInteraction && context.performed)
