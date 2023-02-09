@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 3817177374126296463}
   - component: {fileID: 240534720096223786}
   - component: {fileID: 2644310365196465888}
-  - component: {fileID: 2718853112650948066}
+  - component: {fileID: 3145608550060618403}
   m_Layer: 0
   m_Name: archeryrange
   m_TagString: Selectable
@@ -121,8 +121,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2718853112650948066
-BoxCollider:
+--- !u!64 &3145608550060618403
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -131,6 +131,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.8024235, y: 1.5380441, z: 1.5513561}
-  m_Center: {x: -0.06188774, y: 0.76504856, z: -0.011342764}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6575177401481860906, guid: a62dbd24147283d4f90642c8106d89b1, type: 3}

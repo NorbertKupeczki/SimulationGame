@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5665047165203744271}
   - component: {fileID: 8732921631950932394}
   - component: {fileID: 6833480973180632416}
-  - component: {fileID: 2370827834201446167}
+  - component: {fileID: 1297547199462775659}
   m_Layer: 0
   m_Name: house
   m_TagString: Untagged
@@ -88,8 +88,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2370827834201446167
-BoxCollider:
+--- !u!64 &1297547199462775659
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -98,9 +98,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.6872314, y: 0.9138494, z: 1.6562468}
-  m_Center: {x: 0.000000059604645, y: 0.4480045, z: 0.009095848}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4085542598650377539, guid: c30c12e17a3379c41ba202b2299b00c8, type: 3}
 --- !u!1 &5529897827228892357
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,5 +132,5 @@ Transform:
   m_Children:
   - {fileID: 5665047165203744271}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

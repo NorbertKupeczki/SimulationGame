@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 5246693028297666220}
   - component: {fileID: 9178375724254126345}
   - component: {fileID: 6378455374976816579}
-  - component: {fileID: 7761158744911566562}
+  - component: {fileID: 9066321260405485313}
   m_Layer: 0
   m_Name: watermill
   m_TagString: Untagged
@@ -171,8 +171,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7761158744911566562
-BoxCollider:
+--- !u!64 &9066321260405485313
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -181,9 +181,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.534291, y: 1.5971227, z: 1.4203874}
-  m_Center: {x: -0.18259346, y: 0.21673977, z: -0.05000013}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 3140603888766757989, guid: 789ee508d3b782742b02cbf4e1ed0039, type: 3}
 --- !u!1 &5258652974459548850
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,5 +215,5 @@ Transform:
   m_Children:
   - {fileID: 5246693028297666220}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

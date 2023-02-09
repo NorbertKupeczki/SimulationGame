@@ -114,7 +114,7 @@ Transform:
   m_Children:
   - {fileID: 6654117950791129153}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6274637612255068923
 GameObject:
@@ -127,7 +127,8 @@ GameObject:
   - component: {fileID: 6654117950791129153}
   - component: {fileID: 7779957980320733156}
   - component: {fileID: 5481727206221374254}
-  - component: {fileID: 8835588172890680609}
+  - component: {fileID: 7372753140382108974}
+  - component: {fileID: 1542140998708076623}
   m_Layer: 0
   m_Name: mill
   m_TagString: Untagged
@@ -205,8 +206,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8835588172890680609
-BoxCollider:
+--- !u!64 &7372753140382108974
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -215,6 +216,20 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.6872317, y: 1.6322111, z: 1.6683209}
-  m_Center: {x: -0.00000029802322, y: 0.7905199, z: 0.025980473}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 5959476287369345624, guid: 6a32dd3e1209cca439735a1cd3e70c30, type: 3}
+--- !u!114 &1542140998708076623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6274637612255068923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c58d875d8047b5f448b6439bddaa5fb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _blades: {fileID: 2064630784050334805}

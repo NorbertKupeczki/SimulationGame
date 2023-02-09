@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 4899259688588171814}
   - component: {fileID: 8381886307441268099}
   - component: {fileID: 6032156523901198665}
-  - component: {fileID: 3852556413648114312}
+  - component: {fileID: 4677961121456708513}
   m_Layer: 0
   m_Name: market
   m_TagString: Selectable
@@ -120,8 +120,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3852556413648114312
-BoxCollider:
+--- !u!64 &4677961121456708513
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -130,6 +130,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.4697969, y: 0.86392105, z: 1.6744456}
-  m_Center: {x: 0.0150591135, y: 0.39049, z: 0.065611005}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 5658007205554919112, guid: fd4fe05f7b8473d4294611cdf5405463, type: 3}

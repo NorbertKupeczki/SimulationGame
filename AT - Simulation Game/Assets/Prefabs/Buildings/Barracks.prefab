@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2810044553368908569}
   - component: {fileID: 1247658962432310460}
   - component: {fileID: 3941886068911818870}
-  - component: {fileID: 3828209823139966429}
+  - component: {fileID: 9116942544268802143}
   m_Layer: 0
   m_Name: barracks
   m_TagString: Selectable
@@ -89,8 +89,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3828209823139966429
-BoxCollider:
+--- !u!64 &9116942544268802143
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -99,9 +99,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.9888201, y: 1.2985121, z: 1.6100924}
-  m_Center: {x: 0.009751707, y: 0.6420298, z: -0.241124}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 1693395904938935028, guid: 319de97cdadb2dd4996941bec7c85659, type: 3}
 --- !u!1 &8818032113624273065
 GameObject:
   m_ObjectHideFlags: 0

@@ -26,8 +26,7 @@ public class SelectionMarker : MonoBehaviour
 
     public void SetBuilding(GameObject target)
     {
-        float topOfObject = target.GetComponent<Collider>().bounds.max.y;
-        transform.position = new Vector3(target.transform.position.x, topOfObject, target.transform.position.z);
+        transform.position = new Vector3(target.transform.position.x, 0.003f, target.transform.position.z);
     }
 
     public void CancelSelection()

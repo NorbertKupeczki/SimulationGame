@@ -1,8 +1,9 @@
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class CameraHandler : MonoBehaviour
 {
@@ -71,7 +72,8 @@ public class CameraHandler : MonoBehaviour
         MoveCamera(_inputs.Player.Move.ReadValue<Vector2>());
         OrbitCamera(_inputs.Player.Orbit.ReadValue<float>());
         ZoomCamera(_inputs.Player.Zoom.ReadValue<float>());
-        
+
+        UpdateCameraFocusTransform();
     }
 
     private void OnEnable()
@@ -92,7 +94,6 @@ public class CameraHandler : MonoBehaviour
             Vector3 movement = (transform.forward * vec.y + transform.right * vec.x) * _cameraSpeed * _speedUp;
             _newPosition = transform.position + movement;
         }
-        transform.position = Vector3.Lerp(transform.position, _newPosition, LERP_CONST * Time.deltaTime);
     }
 
     public void OrbitCamera(float direction)
@@ -100,8 +101,7 @@ public class CameraHandler : MonoBehaviour
         if(Mathf.Abs(direction) > 0)
         {
             _newRotation *= Quaternion.AngleAxis(direction * _orbitSpeed * _speedUp, Vector3.up);
-        }
-        transform.rotation = Quaternion.Lerp(transform.rotation, _newRotation, LERP_CONST * Time.deltaTime );
+        }        
     }
 
     public void ZoomCamera(float direction)
@@ -112,8 +112,7 @@ public class CameraHandler : MonoBehaviour
             float deltaZoom = -direction * _zoomSpeed;
 
             SetNewZoom(curZoom + deltaZoom);
-        }
-        _camera.transform.localPosition = Vector3.Lerp(_camera.transform.localPosition, _newZoom, LERP_CONST * Time.deltaTime);
+        }        
     }
 
     public void SpeedUpButton(InputAction.CallbackContext context)
@@ -155,6 +154,11 @@ public class CameraHandler : MonoBehaviour
     #region"Mouse events"
     private void MouseClickLeft(InputAction.CallbackContext context)
     {
+        if(EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
         Ray ray = _camera.GetComponent<Camera>().ScreenPointToRay(Mouse.current.position.ReadValue());
         if (Physics.Raycast(ray, out RaycastHit raycastHit))
         {
@@ -230,6 +234,12 @@ public class CameraHandler : MonoBehaviour
     }
     #endregion
 
+    private void UpdateCameraFocusTransform()
+    {
+        transform.position = Vector3.Lerp(transform.position, _newPosition, LERP_CONST * Time.deltaTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, _newRotation, LERP_CONST * Time.deltaTime);
+        _camera.transform.localPosition = Vector3.Lerp(_camera.transform.localPosition, _newZoom, LERP_CONST * Time.deltaTime);
+    }
     private void SetNewZoom(float zoom)
     {
         if (zoom < _minMaxZoom.x)
