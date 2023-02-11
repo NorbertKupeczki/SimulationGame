@@ -25,6 +25,11 @@ public class Mill : MonoBehaviour
         UpdateBlades();
     }
 
+    public void ToggleMill()
+    {
+        _bladesRotationOn = !_bladesRotationOn;
+    }
+
     private void UpdateBlades()
     {
         if (_bladesRotationOn && _rotationSpeed < _MAX_ROTATION_SPEED)

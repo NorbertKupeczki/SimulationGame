@@ -34,7 +34,8 @@ public class WheatResource : MonoBehaviour
         _ripePosition = position;
         _harvestedPosition = new Vector3(position.x, -_resource.GetComponent<Renderer>().bounds.extents.y * 2.0f - 0.01f, position.z);
 
-        Harvest();
+        _resource.transform.localPosition = _harvestedPosition;
+        _state = WheatState.HARVESTED;
 
         _growingWheat_CR = StartCoroutine(GrowingWheat());
     }
@@ -47,38 +48,16 @@ public class WheatResource : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch (_state)
+        if (_sow)
         {
-            case WheatState.HARVESTED:
-                {
-                    if (_sow)
-                    {
-                        Debug.Log("Wheat sown");
-                        _sow = false;
-                        SowWheat();
-                    }
-                }
-                break;
-            case WheatState.GROWING:
-                {
-                    if (_sow || _harvest)
-                    {
-                        _sow = false;
-                        _harvest = false;
-                    }
-                }
-                break;
-            case WheatState.RIPE:
-                {
-                    if (_harvest)
-                    {
-                        _harvest = false;
-                        Debug.Log("Harvested " + Harvest() + " units of wheat");
-                    }
-                }
-                break;
-            default:
-                break;
+            Debug.Log("Wheat sown");
+            _sow = false;
+            SowWheat();
+        }
+
+        if (_harvest)
+        {
+            _harvest = false;
         }
     }
 
@@ -87,19 +66,28 @@ public class WheatResource : MonoBehaviour
         StopCoroutine(_growingWheat_CR);
     }
 
-    public float Harvest()
+    public void Harvest() // << For testing it has been turned to void
     {
-        float resourceYield;
-        _resource.transform.localPosition = _harvestedPosition;
-        _state = WheatState.HARVESTED;
-        resourceYield = _growth;
-        _growth = 0.0f;
-        return resourceYield;
+        if (_state == WheatState.RIPE)
+        {
+            float resourceYield;
+            _resource.transform.localPosition = _harvestedPosition;
+            _state = WheatState.HARVESTED;
+            resourceYield = _growth;
+            _growth = 0.0f;
+            Debug.Log("Harvested " + resourceYield + " units of wheat");
+            //return resourceYield;
+        }
+        Debug.Log("Not ready to harvest yet!");
+        //return 0;
     }
 
     public void SowWheat()
     {
-        _state = WheatState.GROWING;
+        if (_state == WheatState.HARVESTED)
+        {
+            _state = WheatState.GROWING;
+        }
     }
 
     private IEnumerator GrowingWheat()
