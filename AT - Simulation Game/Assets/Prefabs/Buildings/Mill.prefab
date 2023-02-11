@@ -98,7 +98,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6313346450040298150
 Transform:
@@ -134,7 +134,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6654117950791129153
 Transform:
@@ -233,3 +233,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _blades: {fileID: 2064630784050334805}
+  _rotationSpeed: 0
+  _lerpSpeed: 0.7
+  _bladesRotationOn: 0

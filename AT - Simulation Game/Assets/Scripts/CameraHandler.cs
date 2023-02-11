@@ -28,10 +28,10 @@ public class CameraHandler : MonoBehaviour
     private bool _rightMouseKeyHeld = false;
 
     [Header("Mouse")]
-    [SerializeField] [Range(0.5f, 1.5f)] private float _dragSensitivity = 1.0f;
+    [SerializeField] [Range(0.1f, 1.0f)] private float _dragSensitivity = 0.5f;
     [SerializeField] [Range(0.5f, 1.5f)] private float _orbitSensitivity = 1.0f;
     [SerializeField] [Range(0.5f, 1.5f)] private float _zoomSensitivity = 1.0f;
-    private const float DRAG_MODIFIER = 1.1f;
+    private const float DRAG_MODIFIER = 0.5f;
     private const float ORBIT_MODIFIER = 0.2f;
     private const float ZOOM_MODIFIER = 0.15f;
 

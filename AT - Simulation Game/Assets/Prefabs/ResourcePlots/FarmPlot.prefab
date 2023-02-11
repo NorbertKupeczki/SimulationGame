@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -2653651044934150266, guid: a9f0821346c28c74ca58417b25adef4f, type: 3}
+  - {fileID: 2100000, guid: af8ac8e57c3b06145937fc1bec2ee0d7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -94,12 +94,13 @@ GameObject:
   - component: {fileID: 3003133463804066086}
   - component: {fileID: 2162464958274483843}
   - component: {fileID: 4172137716588134985}
+  - component: {fileID: 6397907657888031455}
   m_Layer: 0
   m_Name: farm_plot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &3003133463804066086
 Transform:
@@ -145,9 +146,9 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -4770390735465466038, guid: a9f0821346c28c74ca58417b25adef4f, type: 3}
-  - {fileID: -2867747967464863736, guid: a9f0821346c28c74ca58417b25adef4f, type: 3}
-  - {fileID: 7575915981058242857, guid: a9f0821346c28c74ca58417b25adef4f, type: 3}
+  - {fileID: 2100000, guid: 8c348a566c21f4a4a8b7ee68ed2f7bac, type: 2}
+  - {fileID: 2100000, guid: e39ffdb35b796494398336dea2891fc4, type: 2}
+  - {fileID: 2100000, guid: 18c116de93ad1c742b6e0eb3175c53c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -169,6 +170,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6397907657888031455
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2514861637485290396}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.4727061, y: 0.2997402, z: 1.2831714}
+  m_Center: {x: 0.0000706017, y: 0.13396874, z: 0}
 --- !u!1 &6342054341423170544
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,12 +192,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5179539348279554290}
+  - component: {fileID: -5424549949946739157}
   m_Layer: 0
   m_Name: FarmPlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &5179539348279554290
 Transform:
@@ -199,5 +214,22 @@ Transform:
   m_Children:
   - {fileID: 3003133463804066086}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-5424549949946739157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6342054341423170544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07d473e7fcaa4be46a6fd880551ac3c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _resource: {fileID: 468506150846121233}
+  _growth: 0
+  _state: 0
+  _harvest: 0
+  _sow: 0
