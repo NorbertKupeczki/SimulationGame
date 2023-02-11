@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,7 +13,6 @@ public class CameraHandler : MonoBehaviour
     [SerializeField] float _orbitSpeed;
     [SerializeField] float _zoomSpeed;
     [SerializeField] Vector2 _minMaxZoom;
-    [SerializeField] GameObject _particleSystem;
     [SerializeField] SelectionMarker _marker;
 
     private Vector3 _newPosition;
@@ -22,6 +22,9 @@ public class CameraHandler : MonoBehaviour
     private const float LERP_CONST = 5.0f;
     private const float NORMAL_SPEED = 1.0f;
     private const float BOOSTED_SPEED = 2.5f;
+    private float _zoomFactor = 0.3f;
+    private const float ZOOM_FACTOR_MIN = 0.2f;
+    private const float ZOOM_FACTOR_MAX = 0.7f;
 
     private InputActions _inputs;
     private bool _middleMouseKeyDown = false;
@@ -31,9 +34,12 @@ public class CameraHandler : MonoBehaviour
     [SerializeField] [Range(0.1f, 1.0f)] private float _dragSensitivity = 0.5f;
     [SerializeField] [Range(0.5f, 1.5f)] private float _orbitSensitivity = 1.0f;
     [SerializeField] [Range(0.5f, 1.5f)] private float _zoomSensitivity = 1.0f;
-    private const float DRAG_MODIFIER = 0.5f;
     private const float ORBIT_MODIFIER = 0.2f;
     private const float ZOOM_MODIFIER = 0.15f;
+
+    private GraphicRaycaster _graphicRaycaster;
+    private PointerEventData _pointerEventData;
+    private EventSystem _eventSystem;
 
     private void Awake()
     {
@@ -64,7 +70,14 @@ public class CameraHandler : MonoBehaviour
         _inputs.Player.MouseScroll.performed += ctx => MouseScroll(ctx);
 
         _inputs.Player.MouseMoveDelta.performed += ctx => MouseDelta(ctx);
+    }
 
+    private void Start()
+    {
+        UI uiScript = FindObjectOfType<UI>().GetComponent<UI>();
+        _graphicRaycaster = uiScript.GetGraphicsRaycaster();
+        _eventSystem = uiScript.GetEventSystem();
+        _pointerEventData = new PointerEventData(_eventSystem);
     }
 
     private void Update()
@@ -92,7 +105,7 @@ public class CameraHandler : MonoBehaviour
         if (vec != Vector2.zero)
         {
             Vector3 movement = (transform.forward * vec.y + transform.right * vec.x) * _cameraSpeed * _speedUp;
-            _newPosition = transform.position + movement;
+            _newPosition = transform.position + movement * _zoomFactor;
         }
     }
 
@@ -154,12 +167,18 @@ public class CameraHandler : MonoBehaviour
     #region"Mouse events"
     private void MouseClickLeft(InputAction.CallbackContext context)
     {
-        if(EventSystem.current.IsPointerOverGameObject())
+        _pointerEventData.position = Input.mousePosition;
+
+        List<RaycastResult> results = new List<RaycastResult>(5);
+        _graphicRaycaster.Raycast(_pointerEventData, results);
+
+        if (results.Count > 0)
         {
             return;
         }
 
         Ray ray = _camera.GetComponent<Camera>().ScreenPointToRay(Mouse.current.position.ReadValue());
+
         if (Physics.Raycast(ray, out RaycastHit raycastHit))
         {
             //Debug.Log(raycastHit.collider.gameObject.tag);
@@ -185,17 +204,6 @@ public class CameraHandler : MonoBehaviour
 
     private void MouseClickRight(InputAction.CallbackContext context)
     {
-        /*
-        if (context.ReadValueAsButton())
-        {
-            _rightMouseKeyHeld = true;
-        }
-        else
-        {
-            _rightMouseKeyHeld = false;
-        }
-        */
-
         if (context.interaction is TapInteraction && context.performed)
         {
             _marker.CancelSelection();
@@ -222,9 +230,9 @@ public class CameraHandler : MonoBehaviour
     {
         if (_middleMouseKeyDown)
         {
-            Vector3 mouseDelta = _dragSensitivity * -DRAG_MODIFIER * (transform.forward * context.ReadValue<Vector2>().y +
+            Vector3 mouseDelta = -_dragSensitivity * (transform.forward * context.ReadValue<Vector2>().y +
                                   transform.right * context.ReadValue<Vector2>().x);
-            _newPosition = transform.position + mouseDelta;
+            _newPosition = transform.position + mouseDelta * _zoomFactor;
         }
 
         if (_rightMouseKeyHeld)
@@ -239,6 +247,7 @@ public class CameraHandler : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, _newPosition, LERP_CONST * Time.deltaTime);
         transform.rotation = Quaternion.Lerp(transform.rotation, _newRotation, LERP_CONST * Time.deltaTime);
         _camera.transform.localPosition = Vector3.Lerp(_camera.transform.localPosition, _newZoom, LERP_CONST * Time.deltaTime);
+        UpdateZoomFactor();
     }
     private void SetNewZoom(float zoom)
     {
@@ -259,5 +268,11 @@ public class CameraHandler : MonoBehaviour
     private Vector3 GetZoomVector(float value)
     {
         return new Vector3(0.0f, value, -value);
+    }
+
+    private void UpdateZoomFactor()
+    {
+        float lerpFactor = (_camera.transform.localPosition.y - _minMaxZoom.x) / (_minMaxZoom.y - _minMaxZoom.x); 
+        _zoomFactor = Mathf.Lerp(ZOOM_FACTOR_MIN, ZOOM_FACTOR_MAX, lerpFactor);
     }
 }

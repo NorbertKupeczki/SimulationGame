@@ -7,6 +7,14 @@ using UnityEngine.UI;
 
 public class UI : MonoBehaviour
 {
+    [SerializeField] GraphicRaycaster _graphicRaycaster;
+    [SerializeField] EventSystem _eventSystem;
+
+    private void Awake()
+    {
+        _graphicRaycaster = GetComponent<GraphicRaycaster>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,5 +30,15 @@ public class UI : MonoBehaviour
     public void TestClick()
     {
         Debug.Log("Button has been clicked");
+    }
+
+    public GraphicRaycaster GetGraphicsRaycaster()
+    {
+        return _graphicRaycaster;
+    }
+
+    public EventSystem GetEventSystem()
+    {
+        return _eventSystem;
     }
 }
