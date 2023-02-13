@@ -9,9 +9,11 @@ public class Button : MonoBehaviour
     [SerializeField] private Image _iconBackground;
     [SerializeField] private BuildingSO _buildingData;
     [SerializeField] private TextMeshProUGUI _tooltipText;
+    [SerializeField] private CursorManager _cursorManager;
 
     private void Awake()
     {
+        _cursorManager = FindObjectOfType<CursorManager>();
         _iconBackground.sprite = _buildingData._buildingIcon;
     }
 
@@ -24,5 +26,10 @@ public class Button : MonoBehaviour
     public void OnPointerExit()
     {
         _tooltipText.enabled = false;
+    }
+
+    public void SelectBuilding()
+    {
+        _cursorManager.BuildingButtonClicked(_buildingData);
     }
 }

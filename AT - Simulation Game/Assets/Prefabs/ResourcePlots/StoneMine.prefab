@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4459987646920176506}
   - component: {fileID: 1874052060276475824}
   - component: {fileID: 1982083725847925143}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: mine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,7 +112,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 74391646151994091}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: StoneMine
   m_TagString: Untagged
   m_Icon: {fileID: 0}

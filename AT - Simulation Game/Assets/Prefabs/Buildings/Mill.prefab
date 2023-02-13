@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 552576852777775672}
   - component: {fileID: 6342320066221372933}
   - component: {fileID: 3335311828986165987}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: mill_blades
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6313346450040298150}
   - component: {fileID: 1371566188187618147}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Mill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 7779957980320733156}
   - component: {fileID: 5481727206221374254}
   - component: {fileID: 7372753140382108974}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: mill
   m_TagString: Untagged
   m_Icon: {fileID: 0}

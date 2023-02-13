@@ -9,11 +9,15 @@ public class CursorManager : MonoBehaviour
 {
     [SerializeField] private Texture2D _defaultCursor;
     PointerType _pointerType;
-    [SerializeField] private SelectionMarker _marker;
+    [SerializeField] private SelectionMarker _selectionMarker;
+    [SerializeField] private BuildingSO _selectedBuilding;
+    [SerializeField] private PlacementMarker _placementMarker;
+    [SerializeField] private Vector3 _buildPosition;
 
     private GraphicRaycaster _graphicRaycaster;
     private PointerEventData _pointerEventData;
     private EventSystem _eventSystem;
+    private Camera _camera;
 
     public enum PointerType
     {
@@ -23,6 +27,8 @@ public class CursorManager : MonoBehaviour
 
     private void Awake()
     {
+        _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        _selectedBuilding = null;
         _pointerType = PointerType.BASIC;
     }
 
@@ -40,9 +46,10 @@ public class CursorManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        UpdateDecalProjector();
     }
 
-    public void HandleLeftClick(Camera camera)
+    public void HandleLeftClick()
     {
         _pointerEventData.position = Input.mousePosition;
 
@@ -51,24 +58,86 @@ public class CursorManager : MonoBehaviour
 
         if (results.Count > 0)
         {
+            if (_pointerType == PointerType.PLACEMENT)
+            {
+                Debug.Log("Cancel placing building");
+                CancelBuildingPlacement();
+            }
             return;
         }
 
-        Ray ray = camera.GetComponent<Camera>().ScreenPointToRay(Mouse.current.position.ReadValue());
+        Ray ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
 
         if (Physics.Raycast(ray, out RaycastHit raycastHit))
         {
-            //Debug.Log(raycastHit.collider.gameObject.tag);
-            //Instantiate(_particleSystem, raycastHit.point, Quaternion.identity);
-            if (raycastHit.collider.gameObject.CompareTag("Selectable"))
+            if (_pointerType == PointerType.BASIC)
             {
-                _marker.SetBuilding(raycastHit.collider.gameObject);
+                //Debug.Log(raycastHit.collider.gameObject.tag);
+                //Instantiate(_particleSystem, raycastHit.point, Quaternion.identity);
+                if (raycastHit.collider.gameObject.CompareTag("Selectable"))
+                {
+                    _selectionMarker.SetBuilding(raycastHit.collider.gameObject);
+                }
             }
+            else if (_pointerType == PointerType.PLACEMENT)
+            {
+                PlaceBuilding(_buildPosition);
+            }            
         }
     }
 
     public void HandleRightClick()
     {
-        _marker.CancelSelection();
+        _selectionMarker.CancelSelection();
+
+        if(_pointerType == PointerType.PLACEMENT)
+        {
+            CancelBuildingPlacement();
+        }
+    }
+
+    private void PlaceBuilding(Vector3 position)
+    {
+        bool obstacle = Physics.CheckSphere(position, 1.0f, LayerMask.GetMask("Buildings"));
+        
+        if (obstacle)
+        {
+            Debug.Log("Obstacle in the way!");
+        }
+        else
+        {
+            Debug.Log("Placing building: " + _selectedBuilding._buildingName);
+            Instantiate(_selectedBuilding._buildingPrefab, position, Quaternion.identity);
+        }
+        CancelBuildingPlacement();
+    }
+
+    public void BuildingButtonClicked(BuildingSO buildingData)
+    {
+        _selectionMarker.CancelSelection();
+        _selectedBuilding = buildingData;
+        Debug.Log("Building selected: " + _selectedBuilding._buildingName);
+        SwitchToPlacementMode();
+    }
+    
+    private void CancelBuildingPlacement()
+    {
+        _placementMarker.SetProjector(false);
+        _selectedBuilding = null;
+        _pointerType = PointerType.BASIC;
+    }
+
+    private void SwitchToPlacementMode()
+    {
+        _placementMarker.SetProjector(true);
+        _pointerType = PointerType.PLACEMENT;
+    }
+
+    private void UpdateDecalProjector()
+    {
+        Ray ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        Physics.Raycast(ray, out RaycastHit raycastHit, 300.0f, LayerMask.GetMask("Ground"));
+        _placementMarker.transform.position = new Vector3(raycastHit.point.x, 0.003f, raycastHit.point.z);
+        _buildPosition = raycastHit.point;
     }
 }

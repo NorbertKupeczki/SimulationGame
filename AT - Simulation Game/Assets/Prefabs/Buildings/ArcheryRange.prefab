@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6638017829430332962}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ArcheryRange
   m_TagString: Selectable
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 240534720096223786}
   - component: {fileID: 2644310365196465888}
   - component: {fileID: 3145608550060618403}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: archeryrange
   m_TagString: Selectable
   m_Icon: {fileID: 0}

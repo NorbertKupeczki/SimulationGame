@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1247658962432310460}
   - component: {fileID: 3941886068911818870}
   - component: {fileID: 9116942544268802143}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: barracks
   m_TagString: Selectable
   m_Icon: {fileID: 0}
@@ -112,7 +112,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8818032113624273062}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Barracks
   m_TagString: Selectable
   m_Icon: {fileID: 0}

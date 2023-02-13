@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1398440658790650859}
   - component: {fileID: 3786600498589525793}
   - component: {fileID: 4966121313237607562}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: forest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4759693563832711238}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Forest
   m_TagString: Untagged
   m_Icon: {fileID: 0}

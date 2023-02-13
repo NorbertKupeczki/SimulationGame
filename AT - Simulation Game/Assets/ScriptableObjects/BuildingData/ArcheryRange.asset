@@ -18,4 +18,5 @@ MonoBehaviour:
   _woodCost: 0
   _oreCost: 0
   _wheatCost: 0
-  _buildingPrefab: {fileID: 0}
+  _buildingPrefab: {fileID: 3534032344130238450, guid: 847a10f8cc9a1c14eb280c2ef5e59aa6,
+    type: 3}

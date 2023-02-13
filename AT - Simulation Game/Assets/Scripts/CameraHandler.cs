@@ -37,10 +37,6 @@ public class CameraHandler : MonoBehaviour
     private const float ORBIT_MODIFIER = 0.2f;
     private const float ZOOM_MODIFIER = 0.15f;
 
-    private GraphicRaycaster _graphicRaycaster;
-    private PointerEventData _pointerEventData;
-    private EventSystem _eventSystem;
-
     private void Awake()
     {
         _camera = gameObject.GetComponentInChildren<Camera>().gameObject;
@@ -74,10 +70,7 @@ public class CameraHandler : MonoBehaviour
 
     private void Start()
     {
-        UI uiScript = FindObjectOfType<UI>().GetComponent<UI>();
-        _graphicRaycaster = uiScript.GetGraphicsRaycaster();
-        _eventSystem = uiScript.GetEventSystem();
-        _pointerEventData = new PointerEventData(_eventSystem);
+        
     }
 
     private void Update()
@@ -167,7 +160,7 @@ public class CameraHandler : MonoBehaviour
     #region"Mouse events"
     private void MouseClickLeft(InputAction.CallbackContext context)
     {
-        _cursorManager.HandleLeftClick(_camera.GetComponent<Camera>());
+        _cursorManager.HandleLeftClick();
     }
 
     private void MouseClickMiddle(InputAction.CallbackContext context)

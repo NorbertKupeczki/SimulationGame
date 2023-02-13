@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 273736969403586043}
   - component: {fileID: 2665174149197848115}
   - component: {fileID: 7281390090735833502}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: farm_wheat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 2162464958274483843}
   - component: {fileID: 4172137716588134985}
   - component: {fileID: 6397907657888031455}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: farm_plot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -193,7 +193,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5179539348279554290}
   - component: {fileID: -5424549949946739157}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FarmPlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 352125756780699412}
   - component: {fileID: 8019304764962963901}
   - component: {fileID: 7377951900827486433}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: watermill_wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 9178375724254126345}
   - component: {fileID: 6378455374976816579}
   - component: {fileID: 9066321260405485313}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: watermill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,7 +194,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6968305964700958108}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Watermill
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2811246948018831550}
   - component: {fileID: 65154299721725044}
   - component: {fileID: 5392987592318767602}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: lumbermill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,7 +111,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9070395558407389960}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Lumbermill
   m_TagString: Untagged
   m_Icon: {fileID: 0}

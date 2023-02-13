@@ -201,9 +201,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Mill, Assembly-CSharp
-        m_MethodName: ToggleMill
+      - m_Target: {fileID: 359720083348087370}
+        m_TargetAssemblyTypeName: Button, Assembly-CSharp
+        m_MethodName: SelectBuilding
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -228,6 +228,7 @@ MonoBehaviour:
   _iconBackground: {fileID: 359720084087087635}
   _buildingData: {fileID: 0}
   _tooltipText: {fileID: 0}
+  _cursorManager: {fileID: 0}
 --- !u!114 &359720083348087382
 MonoBehaviour:
   m_ObjectHideFlags: 0

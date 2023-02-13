@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6321715143338701722}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Market
   m_TagString: Selectable
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 8381886307441268099}
   - component: {fileID: 6032156523901198665}
   - component: {fileID: 4677961121456708513}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: market
   m_TagString: Selectable
   m_Icon: {fileID: 0}
