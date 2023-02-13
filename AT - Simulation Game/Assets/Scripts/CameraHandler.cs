@@ -13,7 +13,7 @@ public class CameraHandler : MonoBehaviour
     [SerializeField] float _orbitSpeed;
     [SerializeField] float _zoomSpeed;
     [SerializeField] Vector2 _minMaxZoom;
-    [SerializeField] SelectionMarker _marker;
+    [SerializeField] CursorManager _cursorManager;
 
     private Vector3 _newPosition;
     private Quaternion _newRotation;
@@ -167,27 +167,7 @@ public class CameraHandler : MonoBehaviour
     #region"Mouse events"
     private void MouseClickLeft(InputAction.CallbackContext context)
     {
-        _pointerEventData.position = Input.mousePosition;
-
-        List<RaycastResult> results = new List<RaycastResult>(5);
-        _graphicRaycaster.Raycast(_pointerEventData, results);
-
-        if (results.Count > 0)
-        {
-            return;
-        }
-
-        Ray ray = _camera.GetComponent<Camera>().ScreenPointToRay(Mouse.current.position.ReadValue());
-
-        if (Physics.Raycast(ray, out RaycastHit raycastHit))
-        {
-            //Debug.Log(raycastHit.collider.gameObject.tag);
-            //Instantiate(_particleSystem, raycastHit.point, Quaternion.identity);
-            if (raycastHit.collider.gameObject.CompareTag("Selectable"))
-            {
-                _marker.SetBuilding(raycastHit.collider.gameObject);
-            }
-        }
+        _cursorManager.HandleLeftClick(_camera.GetComponent<Camera>());
     }
 
     private void MouseClickMiddle(InputAction.CallbackContext context)
@@ -206,7 +186,7 @@ public class CameraHandler : MonoBehaviour
     {
         if (context.interaction is TapInteraction && context.performed)
         {
-            _marker.CancelSelection();
+            _cursorManager.HandleRightClick();
         }
         else if (context.interaction is HoldInteraction && context.performed)
         {

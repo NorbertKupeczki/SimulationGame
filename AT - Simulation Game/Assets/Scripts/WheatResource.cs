@@ -14,7 +14,7 @@ public class WheatResource : MonoBehaviour
     [SerializeField] bool _sow = false;
 
     private const float MAX_GROWTH = 100.0f;
-    private const float RIPE_TIME = 60.0f;
+    private const float GROWTH_TIME = 10.0f; // <<= Set to somehigher value for the final game
 
     private Vector3 _ripePosition;
     private Vector3 _harvestedPosition;
@@ -97,7 +97,7 @@ public class WheatResource : MonoBehaviour
             yield return new WaitUntil(() => _state == WheatState.GROWING);
             while(_growth < MAX_GROWTH)
             {
-                float deltaGrowth = MAX_GROWTH / RIPE_TIME * Time.deltaTime;
+                float deltaGrowth = MAX_GROWTH / GROWTH_TIME * Time.deltaTime;
 
                 if (Mathf.Abs(MAX_GROWTH - _growth) < deltaGrowth)
                 {
