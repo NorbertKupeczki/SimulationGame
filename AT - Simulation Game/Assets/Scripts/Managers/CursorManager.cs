@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -18,6 +17,9 @@ public class CursorManager : MonoBehaviour
     private PointerEventData _pointerEventData;
     private EventSystem _eventSystem;
     private Camera _camera;
+    private UI _ui;
+    private BuildingManager _buildingManager;
+    private CostIcons _costIcons;
 
     public enum PointerType
     {
@@ -28,6 +30,10 @@ public class CursorManager : MonoBehaviour
     private void Awake()
     {
         _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        _ui = FindObjectOfType<UI>();
+        _buildingManager = FindObjectOfType<BuildingManager>();
+        _costIcons = FindObjectOfType<CostIcons>();
+
         _selectedBuilding = null;
         _pointerType = PointerType.BASIC;
     }
@@ -60,14 +66,12 @@ public class CursorManager : MonoBehaviour
         {
             if (_pointerType == PointerType.PLACEMENT)
             {
-                Debug.Log("Cancel placing building");
                 CancelBuildingPlacement();
             }
             return;
         }
 
         Ray ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
-
         if (Physics.Raycast(ray, out RaycastHit raycastHit))
         {
             if (_pointerType == PointerType.BASIC)
@@ -99,15 +103,17 @@ public class CursorManager : MonoBehaviour
     private void PlaceBuilding(Vector3 position)
     {
         bool obstacle = Physics.CheckSphere(position, 1.0f, LayerMask.GetMask("Buildings"));
-        
+        Debug.Log("Trying to place building");
         if (obstacle)
         {
-            Debug.Log("Obstacle in the way!");
+            _ui.StartFloatText("Can't build there!");
         }
         else
         {
-            Debug.Log("Placing building: " + _selectedBuilding._buildingName);
-            Instantiate(_selectedBuilding._buildingPrefab, position, Quaternion.identity);
+            if (!_buildingManager.ConstructBuilding(_selectedBuilding, position))
+            {
+                _ui.StartFloatText("Insufficient resources");
+            }
         }
         CancelBuildingPlacement();
     }
@@ -116,7 +122,9 @@ public class CursorManager : MonoBehaviour
     {
         _selectionMarker.CancelSelection();
         _selectedBuilding = buildingData;
-        Debug.Log("Building selected: " + _selectedBuilding._buildingName);
+
+        _costIcons.SetCosts(buildingData);
+
         SwitchToPlacementMode();
     }
     
@@ -124,6 +132,9 @@ public class CursorManager : MonoBehaviour
     {
         _placementMarker.SetProjector(false);
         _selectedBuilding = null;
+
+        _costIcons.SwitchCostBar(false);
+
         _pointerType = PointerType.BASIC;
     }
 

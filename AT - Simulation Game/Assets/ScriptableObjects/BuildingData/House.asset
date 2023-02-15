@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _buildingIcon: {fileID: 21300000, guid: 79ca17de74a4413428f41ad736cf5559, type: 3}
   _buildingName: House
-  _coinCost: 0
-  _woodCost: 0
+  _coinCost: 25
+  _woodCost: 50
   _oreCost: 0
-  _wheatCost: 0
+  _wheatCost: 25
   _buildingPrefab: {fileID: 5529897827228892357, guid: 43174e71c037cd2469aa1189e57daab8,
     type: 3}

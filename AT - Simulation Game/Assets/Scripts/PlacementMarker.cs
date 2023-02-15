@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 public class PlacementMarker : MonoBehaviour
 {
     [SerializeField] Material _material;
-    [SerializeField] bool _selectionOK = true;
-
+    
+    private Collider _collider;
     private DecalProjector _projector;
     private int _obstacles = 0;
 
@@ -16,6 +14,7 @@ public class PlacementMarker : MonoBehaviour
         _material = GetComponent<DecalProjector>().material;
         _material.SetFloat("_Good", 1);
         _projector = GetComponent<DecalProjector>();
+        _collider = GetComponent<Collider>();
         SetProjector(false);
     }
 
@@ -46,8 +45,18 @@ public class PlacementMarker : MonoBehaviour
         if (_obstacles == 0) SelectionOK();
     }
 
+    /// <summary>
+    /// Toggle the placement indicator ON/OFF.
+    /// </summary>
+    /// <param name="value"></param>
     public void SetProjector(bool value)
     {
         _projector.enabled = value;
-    }    
+        _collider.enabled = value;
+        if (value)
+        {
+            SelectionOK();
+            _obstacles = 0;
+        }
+    }
 }

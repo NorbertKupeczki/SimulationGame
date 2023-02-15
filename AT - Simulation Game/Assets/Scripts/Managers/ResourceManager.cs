@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,39 +19,30 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _oreText;
     [SerializeField] private TextMeshProUGUI _wheatText;
 
+    [Header("Building buttons")]
+    [SerializeField] private List<GameObject> _buildingButtons;
+
     private int _coins;
     private int _wood;
     private int _ore;
     private int _wheat;
 
+    private Coroutine _buttonUpdateRoutine;
+
     private void Awake()
     {
         InitStartingResources();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        _buttonUpdateRoutine = StartCoroutine(UpdateButtonStates());
     }
 
     private void InitStartingResources()
     {
-        _coinText.text = _startingCoins.ToString();
-        _woodText.text = _startingWood.ToString();
-        _oreText.text = _startingOre.ToString();
-        _wheatText.text = _startingWheat.ToString();
-
         _coins = _startingCoins;
         _wood = _startingWood;
         _ore = _startingOre;
         _wheat = _startingWheat;
+
+        UpdateUI();
     }
 
     #region Check resource functions
@@ -103,6 +95,7 @@ public class ResourceManager : MonoBehaviour
     public void GainCoins(int value)
     {
         _coins += value;
+        UpdateUI(_coinText, _coins);
     }
 
     /// <summary>
@@ -112,6 +105,7 @@ public class ResourceManager : MonoBehaviour
     public void GainWood(int value)
     {
         _wood += value;
+        UpdateUI(_woodText, _wood);
     }
 
     /// <summary>
@@ -121,6 +115,7 @@ public class ResourceManager : MonoBehaviour
     public void GainOre(int value)
     {
         _ore += value;
+        UpdateUI(_oreText, _ore);
     }
 
     /// <summary>
@@ -130,6 +125,7 @@ public class ResourceManager : MonoBehaviour
     public void GainWheat(int value)
     {
         _wheat += value;
+        UpdateUI(_wheatText, _wheat);
     }
     #endregion
 
@@ -144,6 +140,7 @@ public class ResourceManager : MonoBehaviour
         if (HasEnoughCoins(value))
         {
             _coins -= value;
+            UpdateUI(_coinText, _coins);
             return true;
         }
         return false;
@@ -159,6 +156,7 @@ public class ResourceManager : MonoBehaviour
         if (HasEnoughWood(value))
         {
             _wood -= value;
+            UpdateUI(_woodText, _wood);
             return true;
         }
         return false;
@@ -174,6 +172,7 @@ public class ResourceManager : MonoBehaviour
         if (HasEnoughOre(value))
         {
             _ore -= value;
+            UpdateUI(_oreText, _ore);
             return true;
         }
         return false;
@@ -189,9 +188,68 @@ public class ResourceManager : MonoBehaviour
         if (HasEnoughWheat(value))
         {
             _wheat -= value;
+            UpdateUI(_wheatText, _wheat);
             return true;
         }
         return false;
     }
     #endregion
+
+    public bool SpendResources(BuildingSO buildingData)
+    {
+        if (AffordabilityCheck(buildingData))
+        {
+            SpendCoins(buildingData._coinCost);
+            SpendWood(buildingData._woodCost);
+            SpendOre(buildingData._oreCost);
+            SpendWheat(buildingData._wheatCost);
+            return true;
+        }
+        return false;
+    }
+
+    public bool AffordabilityCheck(BuildingSO buildingData)
+    {
+        if (!HasEnoughCoins(buildingData._coinCost)) return false;
+        else if (!HasEnoughWood(buildingData._woodCost)) return false;
+        else if (!HasEnoughOre(buildingData._oreCost)) return false;
+        else if (!HasEnoughWheat(buildingData._wheatCost)) return false;
+        return true;
+    }
+
+    private IEnumerator UpdateButtonStates()
+    {
+        while(true)
+        {
+            foreach(GameObject button in _buildingButtons)
+            {
+                Button buttonScript = button.GetComponent<Button>();
+                bool isAffordable = AffordabilityCheck(buttonScript.GetBuildingData());
+                
+                if (isAffordable && !buttonScript.IsButtonInteractable())
+                {
+                    button.GetComponent<Button>().SwithcButton(true);
+                }
+                else if (!isAffordable && buttonScript.IsButtonInteractable())
+                {
+                    button.GetComponent<Button>().SwithcButton(false);
+                }
+                yield return new WaitForEndOfFrame();
+            }
+        }
+    }
+
+    private void UpdateUI()
+    {
+        _coinText.text = _coins.ToString();
+        _woodText.text = _wood.ToString();
+        _oreText.text = _ore.ToString();
+        _wheatText.text = _wheat.ToString();
+    }
+
+    private void UpdateUI(TextMeshProUGUI toUpdate, int value)
+    {
+        toUpdate.text = value.ToString();
+    }
+
 }
