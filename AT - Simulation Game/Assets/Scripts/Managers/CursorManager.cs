@@ -72,22 +72,24 @@ public class CursorManager : MonoBehaviour
         }
 
         Ray ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
-        if (Physics.Raycast(ray, out RaycastHit raycastHit))
-        {
-            if (_pointerType == PointerType.BASIC)
+        
+        
+        if (_pointerType == PointerType.BASIC &&
+            Physics.Raycast(ray, out RaycastHit raycastHit, 300.0f, LayerMask.GetMask("Buildings")))
+        {            
+            //Debug.Log(raycastHit.collider.gameObject.tag);
+            if (raycastHit.collider.gameObject.CompareTag("Selectable"))
             {
-                //Debug.Log(raycastHit.collider.gameObject.tag);
-                //Instantiate(_particleSystem, raycastHit.point, Quaternion.identity);
-                if (raycastHit.collider.gameObject.CompareTag("Selectable"))
-                {
-                    _selectionMarker.SetBuilding(raycastHit.collider.gameObject);
-                }
+                _selectionMarker.SetBuilding(raycastHit.collider.gameObject);
+                return;
             }
-            else if (_pointerType == PointerType.PLACEMENT)
-            {
-                PlaceBuilding(_buildPosition);
-            }            
+            else { return; }            
         }
+        else if (_pointerType == PointerType.PLACEMENT)
+        {
+            PlaceBuilding(_buildPosition);
+        }            
+        
     }
 
     public void HandleRightClick()
@@ -102,8 +104,10 @@ public class CursorManager : MonoBehaviour
 
     private void PlaceBuilding(Vector3 position)
     {
-        bool obstacle = Physics.CheckSphere(position, 1.0f, LayerMask.GetMask("Buildings"));
-        Debug.Log("Trying to place building");
+        
+        bool obstacle = Physics.CheckSphere(position, 1.0f, LayerMask.GetMask("Buildings")) ||
+                        Physics.CheckSphere(position, 1.0f, LayerMask.GetMask("Units"));
+
         if (obstacle)
         {
             _ui.StartFloatText("Can't build there!");

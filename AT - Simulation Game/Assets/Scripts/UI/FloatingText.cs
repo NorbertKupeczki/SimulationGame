@@ -10,7 +10,6 @@ public class FloatingText : MonoBehaviour
     [SerializeField] float _lifeTime = 3.0f;
     [SerializeField] [Range(0.01f, 1.0f)] float _fadeRate = 1.0f;
     [SerializeField] float _startingY = 0.0f;
-    [SerializeField] string _name = "Floating Text";
 
     private RectTransform _rectTransform;
     private Vector3 _moveVector;
@@ -19,8 +18,6 @@ public class FloatingText : MonoBehaviour
 
     private void Awake()
     {
-        name = "[Floating text] " + _name;
-
         _rectTransform = GetComponent<RectTransform>();
         _text = GetComponent<TextMeshProUGUI>();
 
@@ -55,6 +52,7 @@ public class FloatingText : MonoBehaviour
     public void SetText(string text)
     {
         GetComponent<TextMeshProUGUI>().text = text;
+        name = "[Floating text] " + text;
     }
 
     public void SetStartingPosition(float x, float y)

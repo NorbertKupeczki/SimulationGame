@@ -95,7 +95,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.96523523
+  m_Radius: 1.02
   m_Height: 2.27
   m_Direction: 1
   m_Center: {x: 0.012472421, y: 0.18, z: -0.025674045}
@@ -108,9 +108,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4759693563832711238}
+  - component: {fileID: 7790819840245918595}
   m_Layer: 7
   m_Name: Forest
-  m_TagString: Untagged
+  m_TagString: Selectable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -128,6 +129,117 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2650256006992436302}
+  - {fileID: 4102419371883527928}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7790819840245918595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4759693563832711239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57bcbafc244832b4185d912400c8961c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1001 &7260837232317212074
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 2
+    m_TransformParent: {fileID: 4759693563832711238}
+    m_Modifications:
+    - target: {fileID: 6641987361972345680, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: _buildingScript
+      value: 
+      objectReference: {fileID: 7790819840245918595}
+    - target: {fileID: 6641987361972345681, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_Radius
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345687, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000,
+        type: 0}
+    - target: {fileID: 6641987361972345687, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_Name
+      value: Forest
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345687, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_AddedGameObjects: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3a6d5b438818b504e8e982ac304094d6, type: 3}
+--- !u!4 &4102419371883527928 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+    type: 3}
+  m_PrefabInstance: {fileID: 7260837232317212074}
+  m_PrefabAsset: {fileID: 0}

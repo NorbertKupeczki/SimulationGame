@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6638017829430332962}
+  - component: {fileID: 5151151597473940431}
   m_Layer: 7
   m_Name: ArcheryRange
   m_TagString: Selectable
@@ -29,9 +30,22 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3817177374126296463}
+  - {fileID: 150072761584203406}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5151151597473940431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3534032344130238450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1be54598e7bc53448f718e9fb9d8daf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4589878530015532853
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,9 +143,97 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4589878530015532853}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6575177401481860906, guid: a62dbd24147283d4f90642c8106d89b1, type: 3}
+--- !u!1001 &6789244818641841628
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 2
+    m_TransformParent: {fileID: 6638017829430332962}
+    m_Modifications:
+    - target: {fileID: 6641987361972345680, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: _buildingScript
+      value: 
+      objectReference: {fileID: 5151151597473940431}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641987361972345687, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 419385456094870383, guid: 0000000000000000d000000000000000,
+        type: 0}
+    - target: {fileID: 6641987361972345687, guid: 3a6d5b438818b504e8e982ac304094d6,
+        type: 3}
+      propertyPath: m_Name
+      value: Archery Range
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_AddedGameObjects: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3a6d5b438818b504e8e982ac304094d6, type: 3}
+--- !u!4 &150072761584203406 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6641987361972345682, guid: 3a6d5b438818b504e8e982ac304094d6,
+    type: 3}
+  m_PrefabInstance: {fileID: 6789244818641841628}
+  m_PrefabAsset: {fileID: 0}
