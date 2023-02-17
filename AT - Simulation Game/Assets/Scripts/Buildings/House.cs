@@ -19,6 +19,5 @@ public class House : MonoBehaviour, IBuildingInteraction
     public Vector3 GetInteractionDestination()
     {
         return _iPoint.transform.position;
-    }
-        
+    }        
 }

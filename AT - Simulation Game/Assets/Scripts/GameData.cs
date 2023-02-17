@@ -9,7 +9,7 @@ public static class GameData
         WORKER = 0,
         FARMER = 1,
         MINER = 2,
-        MERCHANT = 3
+        LUMBERJACK = 3
     }
 
     public enum BuildingType

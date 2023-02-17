@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
+using static GameData;
 
 public class Unit : MonoBehaviour
 {
-    [Header ("Unit info")]
-    [SerializeField] private UnitSO _unitData;
-    [field:SerializeField] public bool _isBusy { get; private set; }
-    [field:SerializeField] public float _energy { get; private set; }
-    [field:SerializeField] public float _water { get; private set; }
+    [field: Header ("Unit info")]
+    [field:SerializeField] public UnitSO UnitData { get; set; }
+    [field:SerializeField] public bool IsBusy { get; private set; }
+    [field:SerializeField] public float Energy { get; private set; }
+    [field:SerializeField] public float Water { get; private set; }
 
     [Header ("Interactions")]
     [SerializeField] private GameObject _goal;
@@ -20,17 +21,16 @@ public class Unit : MonoBehaviour
 
     private void Awake()
     {
-        _isBusy = false;
-        _energy = 100;
-        _water = 100;
+        IsBusy = false;
+        Energy = 100;
+        Water = 100;
 
         _nav = GetComponent<NavMeshAgent>();
-        _nav.speed = _unitData.Speed;
     }
     // Start is called before the first frame update
     void Start()
     {
-        
+        InitUnit();
     }
 
     // Update is called once per frame
@@ -38,7 +38,7 @@ public class Unit : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GameObject _goal = SearchClosestBuildingOfType(GameData.BuildingType.HOUSE);
+            GameObject _goal = SearchClosestBuildingOfType(UnitData.BuildingType);
             _iFace = _goal.GetComponent<IBuildingInteraction>();      
 
             if (!_nav.SetDestination(_iFace.GetInteractionDestination()))
@@ -73,8 +73,13 @@ public class Unit : MonoBehaviour
         }
     }
 
-    private GameObject SearchClosestBuildingOfType(GameData.BuildingType type)
+    private GameObject SearchClosestBuildingOfType(BuildingType type)
     {
-        return FindObjectOfType<BuildingManager>().GetClosestBuilding(GameData.BuildingType.HOUSE, transform.position).GetAwaiter().GetResult();
+        return FindObjectOfType<BuildingManager>().GetClosestBuilding(type, transform.position).GetAwaiter().GetResult();
+    }
+
+    private void InitUnit()
+    {
+        _nav.speed = UnitData.Speed;
     }
 }

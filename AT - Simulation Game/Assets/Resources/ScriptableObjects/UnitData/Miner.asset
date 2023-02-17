@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 680bd6ade3c1d434f88f89be934e8e07, type: 3}
-  m_Name: Worker
+  m_Name: Miner
   m_EditorClassIdentifier: 
-  UnitName: Worker
-  UnitType: 0
+  UnitName: Miner
+  UnitType: 2
   Speed: 2
-  BuildingType: 3
-  Color: {r: 0, g: 0.47564286, b: 0.8113208, a: 0}
+  BuildingType: 10
+  Color: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 0}

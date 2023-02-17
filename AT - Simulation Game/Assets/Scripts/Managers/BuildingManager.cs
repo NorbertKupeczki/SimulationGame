@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
+using static GameData;
 
 public class BuildingManager : MonoBehaviour
 {
     [SerializeField] ResourceManager _resourceManager;
+    [SerializeField] private NavMeshUpdater _navMeshManager;
     [SerializeField] NavMeshBuildSource _buildSource;
 
     [Header ("Building Lists")]
@@ -24,7 +26,7 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private List<GameObject> _forests = new List<GameObject>();
     [SerializeField] private List<GameObject> _mines = new List<GameObject>();
     
-    private Dictionary<GameData.BuildingType, int> _buildingLists = new Dictionary<GameData.BuildingType, int>
+    private Dictionary<BuildingType, int> _buildingLists = new Dictionary<BuildingType, int>
     {
         { GameData.BuildingType.ARCHERY_RANGE, 0 },
         { GameData.BuildingType.BARRACKS, 1 },
@@ -57,6 +59,7 @@ public class BuildingManager : MonoBehaviour
         _masterList.Add(_mines);
 
         _resourceManager = FindObjectOfType<ResourceManager>();
+        _navMeshManager = FindObjectOfType<NavMeshUpdater>();
     }
 
     private void Start()
@@ -68,8 +71,11 @@ public class BuildingManager : MonoBehaviour
     {
         if (_resourceManager.SpendResources(buildingData))
         {
-            Instantiate(buildingData._buildingPrefab, position, Quaternion.identity);
-            FindObjectOfType<NavMeshUpdater>().RefreshNavMesh();
+            GameObject newBuilding = Instantiate(buildingData._buildingPrefab, position, Quaternion.identity);
+            _navMeshManager.RefreshNavMesh();
+
+            _masterList[_buildingLists[buildingData.buildingType]].Add(newBuilding);
+
             return true;
         }
         return false;
@@ -93,7 +99,7 @@ public class BuildingManager : MonoBehaviour
         await Task.Yield();
     }
 
-    public async void FindBuildingOfType<T>(List<GameObject> collection) where T : MonoBehaviour
+    private async void FindBuildingOfType<T>(List<GameObject> collection) where T : MonoBehaviour
     {
         T[] coll = FindObjectsOfType<T>();
         foreach(var item in coll)
@@ -103,7 +109,7 @@ public class BuildingManager : MonoBehaviour
         await Task.Yield();
     }
 
-    public async Task<GameObject> GetClosestBuilding(GameData.BuildingType buildingType, Vector3 position)
+    public async Task<GameObject> GetClosestBuilding(BuildingType buildingType, Vector3 position)
     {
         if (_masterList[_buildingLists[buildingType]].Count == 1)
         {
@@ -128,4 +134,6 @@ public class BuildingManager : MonoBehaviour
         await Task.Yield();
         return null;
     }
+
+
 }

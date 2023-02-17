@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class Mill : MonoBehaviour
+public class Mill : MonoBehaviour, IBuildingInteraction
 {
     [SerializeField] private GameObject _blades;
     [SerializeField][Range(0.0f, 80.0f)] private float _rotationSpeed = 0.0f;
@@ -12,6 +12,13 @@ public class Mill : MonoBehaviour
 
     private const float _MAX_ROTATION_SPEED = 80.0f;
     private const float _ROTATION_TOLERANCE = 1.0f;
+
+    private InteractionPoint _iPoint;
+
+    private void Awake()
+    {
+        _iPoint = GetComponentInChildren<InteractionPoint>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -59,5 +66,15 @@ public class Mill : MonoBehaviour
         {
             _blades.transform.Rotate(_blades.transform.forward, _rotationSpeed * Time.deltaTime, Space.World);
         }
+    }
+
+    public Collider GetInteractionCollider()
+    {
+        return _iPoint.GetComponent<Collider>();
+    }
+
+    public Vector3 GetInteractionDestination()
+    {
+        return _iPoint.transform.position;
     }
 }

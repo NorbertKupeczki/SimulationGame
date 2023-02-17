@@ -2,17 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LumberMill : MonoBehaviour
+public class LumberMill : MonoBehaviour, IBuildingInteraction
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private InteractionPoint _iPoint;
+
+    private void Awake()
     {
-        
+        _iPoint = GetComponentInChildren<InteractionPoint>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public Collider GetInteractionCollider()
     {
-        
+        return _iPoint.GetComponent<Collider>();
+    }
+
+    public Vector3 GetInteractionDestination()
+    {
+        return _iPoint.transform.position;
     }
 }

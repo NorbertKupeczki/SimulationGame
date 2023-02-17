@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class CursorManager : MonoBehaviour
 {
     [SerializeField] private Texture2D _defaultCursor;
-    PointerType _pointerType;
+    [SerializeField] private PointerType _pointerType;
     [SerializeField] private SelectionMarker _selectionMarker;
     [SerializeField] private BuildingSO _selectedBuilding;
     [SerializeField] private PlacementMarker _placementMarker;
@@ -23,10 +23,10 @@ public class CursorManager : MonoBehaviour
 
     public enum PointerType
     {
-        BASIC = 0,
+        DEFAULT = 0,
         PLACEMENT = 1
     }
-
+    
     private void Awake()
     {
         _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
@@ -35,7 +35,7 @@ public class CursorManager : MonoBehaviour
         _costIcons = FindObjectOfType<CostIcons>();
 
         _selectedBuilding = null;
-        _pointerType = PointerType.BASIC;
+        _pointerType = PointerType.DEFAULT;
     }
 
     // Start is called before the first frame update
@@ -74,7 +74,7 @@ public class CursorManager : MonoBehaviour
         Ray ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
         
         
-        if (_pointerType == PointerType.BASIC &&
+        if (_pointerType == PointerType.DEFAULT &&
             Physics.Raycast(ray, out RaycastHit raycastHit, 300.0f, LayerMask.GetMask("Buildings")))
         {            
             //Debug.Log(raycastHit.collider.gameObject.tag);
@@ -112,12 +112,9 @@ public class CursorManager : MonoBehaviour
         {
             _ui.StartFloatText("Can't build there!");
         }
-        else
-        {
-            if (!_buildingManager.ConstructBuilding(_selectedBuilding, position))
-            {
-                _ui.StartFloatText("Insufficient resources");
-            }
+        else if(!_buildingManager.ConstructBuilding(_selectedBuilding, position))
+        {         
+            _ui.StartFloatText("Insufficient resources");            
         }
         CancelBuildingPlacement();
     }
@@ -139,7 +136,7 @@ public class CursorManager : MonoBehaviour
 
         _costIcons.SwitchCostBar(false);
 
-        _pointerType = PointerType.BASIC;
+        _pointerType = PointerType.DEFAULT;
     }
 
     private void SwitchToPlacementMode()

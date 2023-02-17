@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WheatResource : MonoBehaviour
+public class WheatResource : MonoBehaviour, IBuildingInteraction
 {
     [Header ("Base data")]
     [SerializeField] private GameObject _resource;
@@ -13,6 +13,7 @@ public class WheatResource : MonoBehaviour
     [SerializeField] bool _harvest = false;
     [SerializeField] bool _sow = false;
 
+    private InteractionPoint _iPoint;
     private const float MAX_GROWTH = 100.0f;
     private const float GROWTH_TIME = 10.0f; // <<= Set to somehigher value for the final game
 
@@ -38,6 +39,7 @@ public class WheatResource : MonoBehaviour
         _state = WheatState.HARVESTED;
 
         _growingWheat_CR = StartCoroutine(GrowingWheat());
+        _iPoint = GetComponentInChildren<InteractionPoint>();
     }
     // Start is called before the first frame update
     void Start()
@@ -114,5 +116,15 @@ public class WheatResource : MonoBehaviour
                 yield return null;
             }            
         }
+    }
+
+    public Collider GetInteractionCollider()
+    {
+        return _iPoint.GetComponent<Collider>();
+    }
+
+    public Vector3 GetInteractionDestination()
+    {
+        return _iPoint.transform.position;
     }
 }
