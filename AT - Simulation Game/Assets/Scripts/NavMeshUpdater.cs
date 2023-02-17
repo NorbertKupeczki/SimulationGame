@@ -2,18 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Unity.AI.Navigation;
 
 public class NavMeshUpdater : MonoBehaviour
 {
     public GameObject GroundPlane;
     public NavMeshData NavMeshData;
+    /*
     public NavMeshBuildSettings BuildSettings;
     public List<NavMeshBuildSource> Sources;
     public Bounds Bounds;
     public List<NavMeshBuildMarkup> Markups;
+    */
+    public NavMeshSurface Surface;
 
     private void Awake()
     {
+        Surface = GroundPlane.GetComponent<NavMeshSurface>();
         /*
         Sources = new List<NavMeshBuildSource>();
         Markups = new List<NavMeshBuildMarkup>();
@@ -25,9 +30,11 @@ public class NavMeshUpdater : MonoBehaviour
 
     public void RefreshNavMesh()
     {
+        Surface.UpdateNavMesh(Surface.navMeshData);
+        //Surface.BuildNavMesh();
         //NavMeshBuilder.UpdateNavMeshData(NavMeshData,BuildSettings,Sources, Bounds);
     }
-
+    /*
     private void InitSettings()
     {
         BuildSettings.agentRadius = 0.1f;
@@ -40,4 +47,5 @@ public class NavMeshUpdater : MonoBehaviour
         BuildSettings.maxJobWorkers = 2;
 
     }
+    */
 }

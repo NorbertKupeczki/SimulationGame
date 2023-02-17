@@ -69,7 +69,7 @@ public class BuildingManager : MonoBehaviour
         if (_resourceManager.SpendResources(buildingData))
         {
             Instantiate(buildingData._buildingPrefab, position, Quaternion.identity);
-            //FindObjectOfType<NavMeshUpdater>().RefreshNavMesh();
+            FindObjectOfType<NavMeshUpdater>().RefreshNavMesh();
             return true;
         }
         return false;
