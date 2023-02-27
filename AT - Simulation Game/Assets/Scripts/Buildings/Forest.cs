@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameData;
 
 public class Forest : MonoBehaviour, IBuildingInteraction
 {
     [SerializeField] private InteractionPoint _iPoint;
+    [SerializeField] BuildingSO _buildingData;
 
     private void Awake()
     {
@@ -19,5 +21,10 @@ public class Forest : MonoBehaviour, IBuildingInteraction
     public Vector3 GetInteractionDestination()
     {
         return _iPoint.transform.position;
+    }
+    
+    public BuildingType GetBuildingType()
+    {
+        return _buildingData.buildingType;
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,9 @@ public class UnitManager : MonoBehaviour
     [SerializeField] private List<Unit> _lumberjackList = new List<Unit>();
     [SerializeField] private List<UnitSO> _unitTypes;
     [SerializeField] private Unit _unitPrefab;
+
+    public Action UpdateThirstEvent;
+    public Action UpdateFatigueEvent;
 
     private Dictionary<UnitType, int> _unitLists = new Dictionary<UnitType, int>
     {
@@ -37,6 +41,8 @@ public class UnitManager : MonoBehaviour
     void Start()
     {
         FindAllExistingUnits();
+        StartCoroutine(UpdateThirst(3.0f));
+        StartCoroutine(UpdateFatigue(3.0f));
     }
 
     // Update is called once per frame
@@ -92,5 +98,25 @@ public class UnitManager : MonoBehaviour
         newUnit.UnitData = _unitTypes[(int)type];
         newUnit.name = newUnit.UnitData.UnitName;
         AddUnitToList(newUnit);
+    }
+
+    private IEnumerator UpdateThirst(float frequency)
+    {
+        WaitForSeconds delay = new WaitForSeconds(frequency);
+        while (true)
+        {
+            yield return delay;
+            UpdateThirstEvent?.Invoke();            
+        }
+    }
+
+    private IEnumerator UpdateFatigue(float frequency)
+    {
+        WaitForSeconds delay = new WaitForSeconds(frequency);
+        while (true)
+        {
+            yield return delay;
+            UpdateFatigueEvent?.Invoke();
+        }
     }
 }

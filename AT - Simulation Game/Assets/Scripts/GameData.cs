@@ -4,6 +4,14 @@ using UnityEngine;
 
 public static class GameData
 {
+    public const float MESH_SEARCH_AREA = 1.5f;
+
+    public const float THIRST_THRESHOLD = 30.0f;
+    public const float FATIGUE_THRESHOLD = 30.0f;
+
+    public const float WOODCUTTING_TIME = 10.0f;
+    public const float UNLOADING_TIME = 3.0f;
+
     public enum UnitType
     {
         WORKER = 0,
@@ -27,6 +35,25 @@ public static class GameData
         MINE = 10
     }
 
+    public enum UnitActivity
+    {
+        IDLE = 0,
+        GOING_TO_REST = 1,
+        RESTING = 2,
+        GOING_TO_DRINK = 3,
+        DRINKING = 4,
+        GOING_TO_FOREST = 5,
+        CUTTING_WOOD = 6,
+        GOING_TO_MINE = 7,
+        MINING_ORE = 8,
+        GOING_TO_FARM = 9,
+        HARVESTING_WHEAT = 10,
+        SOWING_WHEAT = 11,
+        GOING_TO_LUMBERMILL = 12,
+        GOING_TO_BLACKSMITH = 13,
+        GOING_TO_MILL = 14,
+        DELIVERING_GOODS = 15
+    }
 }
 
 public interface IBuildingInteraction
@@ -34,4 +61,6 @@ public interface IBuildingInteraction
     Vector3 GetInteractionDestination();
     
     Collider GetInteractionCollider();
+
+    GameData.BuildingType GetBuildingType();
 }

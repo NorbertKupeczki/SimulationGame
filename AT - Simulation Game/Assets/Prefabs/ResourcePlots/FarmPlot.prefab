@@ -249,6 +249,7 @@ MonoBehaviour:
   _resource: {fileID: 468506150846121233}
   _growth: 0
   _state: 0
+  _buildingData: {fileID: 11400000, guid: a5e8c61dc26d0bc4e859681fc3d95a68, type: 2}
   _harvest: 0
   _sow: 0
 --- !u!1001 &3160318372717801375

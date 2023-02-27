@@ -134,6 +134,7 @@ MonoBehaviour:
   _rotationSpeed: 0
   _lerpSpeed: 0.7
   _bladesRotationOn: 0
+  _buildingData: {fileID: 11400000, guid: 34f0be94e79ac044b831a6d12ff0422f, type: 2}
 --- !u!1 &6274637612255068923
 GameObject:
   m_ObjectHideFlags: 0

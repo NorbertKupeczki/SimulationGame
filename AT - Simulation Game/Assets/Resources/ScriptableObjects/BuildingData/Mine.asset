@@ -9,12 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 680bd6ade3c1d434f88f89be934e8e07, type: 3}
-  m_Name: Worker
+  m_Script: {fileID: 11500000, guid: f637364cacbcbef42b0b65c9049f69b4, type: 3}
+  m_Name: Mine
   m_EditorClassIdentifier: 
-  UnitName: Worker
-  UnitType: 0
-  Speed: 2
-  Color: {r: 0, g: 0.47564286, b: 0.8113208, a: 0}
-  BuildingType: 3
-  UnitBehaviour: {fileID: 0}
+  _buildingIcon: {fileID: 0}
+  _buildingName: Mine
+  buildingType: 10
+  _coinCost: 0
+  _woodCost: 0
+  _oreCost: 0
+  _wheatCost: 0
+  _buildingPrefab: {fileID: 0}

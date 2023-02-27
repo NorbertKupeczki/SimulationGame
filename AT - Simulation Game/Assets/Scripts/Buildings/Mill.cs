@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using static GameData;
 
 public class Mill : MonoBehaviour, IBuildingInteraction
 {
@@ -9,6 +10,7 @@ public class Mill : MonoBehaviour, IBuildingInteraction
     [SerializeField][Range(0.0f, 80.0f)] private float _rotationSpeed = 0.0f;
     [SerializeField][Range(0.5f, 0.9f)] private float _lerpSpeed = 0.7f;
     [SerializeField] private bool _bladesRotationOn = false;
+    [SerializeField] BuildingSO _buildingData;
 
     private const float _MAX_ROTATION_SPEED = 80.0f;
     private const float _ROTATION_TOLERANCE = 1.0f;
@@ -76,5 +78,10 @@ public class Mill : MonoBehaviour, IBuildingInteraction
     public Vector3 GetInteractionDestination()
     {
         return _iPoint.transform.position;
+    }
+
+    public BuildingType GetBuildingType()
+    {
+        return _buildingData.buildingType;
     }
 }

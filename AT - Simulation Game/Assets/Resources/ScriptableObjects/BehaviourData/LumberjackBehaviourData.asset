@@ -9,12 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 680bd6ade3c1d434f88f89be934e8e07, type: 3}
-  m_Name: Worker
+  m_Script: {fileID: 11500000, guid: b860fcc0cbc0cee488f69aba9b96f24c, type: 3}
+  m_Name: LumberjackBehaviourData
   m_EditorClassIdentifier: 
-  UnitName: Worker
-  UnitType: 0
-  Speed: 2
-  Color: {r: 0, g: 0.47564286, b: 0.8113208, a: 0}
-  BuildingType: 3
-  UnitBehaviour: {fileID: 0}
+  ResourceBuilding: 9
+  DropOffBuilding: 4
+  _bManager: {fileID: 0}
+  CollectingActivity: 6
+  MovingToResourceActivity: 5
+  UnloadingActivity: 15
+  MovingToDropOffActivity: 12

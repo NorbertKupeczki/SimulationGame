@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameData;
 
 public class WheatResource : MonoBehaviour, IBuildingInteraction
 {
@@ -8,6 +9,7 @@ public class WheatResource : MonoBehaviour, IBuildingInteraction
     [SerializeField] private GameObject _resource;
     [SerializeField] [Range (0.0f,100.0f)] private float _growth;
     [SerializeField] WheatState _state;
+    [SerializeField] BuildingSO _buildingData;
 
     [Header("TESTING")]
     [SerializeField] bool _harvest = false;
@@ -126,5 +128,10 @@ public class WheatResource : MonoBehaviour, IBuildingInteraction
     public Vector3 GetInteractionDestination()
     {
         return _iPoint.transform.position;
+    }
+
+    public BuildingType GetBuildingType()
+    {
+        return _buildingData.buildingType;
     }
 }

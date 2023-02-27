@@ -99,10 +99,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3e82b453ffae8042992ddd1d9b7301b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _unitData: {fileID: 11400000, guid: 101ac692373beea4ab1ed4b777a54697, type: 2}
-  <_isBusy>k__BackingField: 0
-  <_energy>k__BackingField: 0
-  <_water>k__BackingField: 0
+  <UnitData>k__BackingField: {fileID: 0}
+  <IsBusy>k__BackingField: 0
+  <Energy>k__BackingField: 0
+  <Water>k__BackingField: 0
   _goal: {fileID: 0}
 --- !u!195 &8554875867598830207
 NavMeshAgent:
@@ -113,7 +113,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 8554875867598830197}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.1
+  m_Radius: 0.5
   m_Speed: 1.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -122,8 +122,8 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 0.4
-  m_BaseOffset: 1
+  m_Height: 2
+  m_BaseOffset: 0.95
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!136 &8554875867598830203
