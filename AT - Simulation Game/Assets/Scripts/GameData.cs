@@ -10,7 +10,15 @@ public static class GameData
     public const float FATIGUE_THRESHOLD = 30.0f;
 
     public const float WOODCUTTING_TIME = 10.0f;
-    public const float UNLOADING_TIME = 3.0f;
+    public const float MINING_TIME = 10.0f;
+    public const float HARVESTING_TIME = 2.0f;
+    public const float UNLOADING_TIME = 1.0f;
+
+    public const float SOWING_WHEAT_TIME = 3.0f;
+
+    public const int WOOD_YIELD = 10;
+    public const int ORE_YIELD = 10;
+    public const int WHEAT_YIELD = 10;
 
     public enum UnitType
     {
@@ -64,3 +72,17 @@ public interface IBuildingInteraction
 
     GameData.BuildingType GetBuildingType();
 }
+
+public interface ISelectable
+{
+    void IsSelected();
+
+    void IsDeselected();
+
+    Transform GetTransform();
+
+    Transform GetInteractionPointTransform();
+
+    void DestroyBuilding();
+}
+

@@ -78,9 +78,9 @@ public class CursorManager : MonoBehaviour
             Physics.Raycast(ray, out RaycastHit raycastHit, 300.0f, LayerMask.GetMask("Buildings")))
         {            
             //Debug.Log(raycastHit.collider.gameObject.tag);
-            if (raycastHit.collider.gameObject.CompareTag("Selectable"))
+            if (raycastHit.collider.gameObject.GetComponentInParent<ISelectable>() is ISelectable)
             {
-                _selectionMarker.SetBuilding(raycastHit.collider.gameObject);
+                _selectionMarker.SetBuilding(raycastHit.collider.gameObject, raycastHit.collider.gameObject.GetComponentInParent<ISelectable>());
                 return;
             }
             else { return; }            

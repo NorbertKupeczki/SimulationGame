@@ -26,14 +26,8 @@ public class Unit : MonoBehaviour
 
     private void Awake()
     {
-        CurrentActivity = UnitActivity.IDLE;
-        Energy = 100;
-        Water = 100;
-        Resources = 0;
-
-        //_taskQueue = new Queue<UnitActivity>();
-        UnitData.UnitBehaviour.InitManagers();
         _nav = GetComponent<NavMeshAgent>();
+        InitUnit();
 
         //Subscribing to UnitManager events
         UnitManager _um = FindObjectOfType<UnitManager>();
@@ -41,20 +35,15 @@ public class Unit : MonoBehaviour
         _um.UpdateThirstEvent += OnUpdateThirst;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        InitUnit();
+        UnitData.UnitBehaviour.InitManagers();
+        CurrentActivity = GetNextTask();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // ONLY FOR TESTING!!!
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            CurrentActivity = GetNextTask();
-        }
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -71,6 +60,7 @@ public class Unit : MonoBehaviour
             {
                 CurrentActivity = UnitData.UnitBehaviour.CollectingActivity;
                 StartCoroutine(UnitData.UnitBehaviour.CollectingResource(OnResourceCollectingDone));
+                ToggleVisibility(false);
             }
             else if (_iFace.GetBuildingType() == UnitData.UnitBehaviour.DropOffBuilding ||
                      _iFace.GetBuildingType() == BuildingType.CASTLE)
@@ -91,6 +81,24 @@ public class Unit : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        UnitManager _um = FindObjectOfType<UnitManager>();
+        _um.UpdateFatigueEvent -= OnUpdateFatigue;
+        _um.UpdateThirstEvent -= OnUpdateThirst;
+    }
+
+    public void ResetUnitActivities()
+    {
+        UnitData.UnitBehaviour.InitManagers();
+        CurrentActivity = UnitActivity.IDLE;
+        _goal = null;
+        _iFace = null;
+        _nav.destination = transform.position;
+        Resources = 0;
+        CurrentActivity = GetNextTask();
+    }
+
     private GameObject SearchClosestBuildingOfType(BuildingType type)
     {
         return FindObjectOfType<BuildingManager>().GetClosestBuilding(type, transform.position).GetAwaiter().GetResult();
@@ -99,6 +107,10 @@ public class Unit : MonoBehaviour
     private void InitUnit()
     {
         _nav.speed = UnitData.Speed;
+        CurrentActivity = UnitActivity.IDLE;
+        Energy = 100;
+        Water = 100;
+        Resources = 0;
     }
 
     private void OnUpdateThirst()
@@ -117,6 +129,7 @@ public class Unit : MonoBehaviour
 
     private void OnResourceCollectingDone(int value)
     {
+        ToggleVisibility(true);
         Resources = value;
         _nav.isStopped = false;
         CurrentActivity = GetNextTask();
@@ -132,7 +145,7 @@ public class Unit : MonoBehaviour
 
     private void ToggleVisibility(bool value)
     {
-        gameObject.SetActive(value);
+        gameObject.GetComponent<MeshRenderer>().enabled = value;
     }
 
     private UnitActivity GetNextTask()
@@ -149,6 +162,8 @@ public class Unit : MonoBehaviour
 
         if (Resources == 0)
         {
+            //If farmer, check if any of the fields need plowing
+
             SetDestination(UnitData.UnitBehaviour.ResourceBuilding, false);
             return UnitData.UnitBehaviour.MovingToResourceActivity;
         }

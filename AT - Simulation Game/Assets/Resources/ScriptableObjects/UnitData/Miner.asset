@@ -15,5 +15,5 @@ MonoBehaviour:
   UnitName: Miner
   UnitType: 2
   Speed: 2
-  BuildingType: 10
   Color: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 0}
+  UnitBehaviour: {fileID: 11400000, guid: faba8d759c7ab6941b28b9e636e4bc19, type: 2}

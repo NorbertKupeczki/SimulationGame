@@ -33,7 +33,6 @@ public abstract class UnitBehaviour : ScriptableObject
     public IEnumerator UnloadResource(Action callBack)
     {
         yield return _unloadingTime;
-        Debug.Log("Unloading Done");
         callBack();
         yield return null;
     }

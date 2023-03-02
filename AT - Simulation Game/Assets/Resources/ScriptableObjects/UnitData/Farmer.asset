@@ -15,5 +15,5 @@ MonoBehaviour:
   UnitName: Farmer
   UnitType: 1
   Speed: 2
-  BuildingType: 5
   Color: {r: 0.9716981, g: 0.64081115, b: 0, a: 0}
+  UnitBehaviour: {fileID: 11400000, guid: 2f3bd2540a72dfc4ba992ea65faf9597, type: 2}

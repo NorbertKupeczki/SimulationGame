@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c9f212e477fba54ab8d391145320876, type: 3}
+  m_Name: WorkerBehaviourData
+  m_EditorClassIdentifier: 
+  ResourceBuilding: 3
+  DropOffBuilding: 2
+  CollectingActivity: 0
+  MovingToResourceActivity: 0
+  UnloadingActivity: 0
+  MovingToDropOffActivity: 0
+  _buildingManager: {fileID: 0}
+  _resourceManager: {fileID: 0}

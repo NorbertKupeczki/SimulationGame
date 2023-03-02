@@ -18,7 +18,7 @@ public class Lumberjack : UnitBehaviour
     {
         yield return _woodcuttingTime;
         Debug.Log("Woodcutting Done");
-        callBack(10);
+        callBack(WOOD_YIELD);
         yield return null;
     }    
 }

@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using static GameData;
 
-public class Castle : MonoBehaviour, IBuildingInteraction
+public class Castle : MonoBehaviour, IBuildingInteraction, ISelectable
 {
     [SerializeField] private InteractionPoint _iPoint;
-    [SerializeField] BuildingSO _buildingData;
+    [SerializeField] private BuildingSO _buildingData;
+    [SerializeField] private GameObject _castleButtons;
 
     private void Awake()
     {
+        _castleButtons.SetActive(false);
         _iPoint = GetComponentInChildren<InteractionPoint>();
     }
 
@@ -26,5 +28,30 @@ public class Castle : MonoBehaviour, IBuildingInteraction
     public BuildingType GetBuildingType()
     {
         return _buildingData.buildingType;
+    }
+
+    public void IsSelected()
+    {
+        _castleButtons.SetActive(true);
+    }
+
+    public void IsDeselected()
+    {
+        _castleButtons.SetActive(false);
+    }
+
+    public Transform GetTransform()
+    {
+        return transform;
+    }
+
+    public Transform GetInteractionPointTransform()
+    {
+        return _iPoint.transform;
+    }
+
+    public void DestroyBuilding()
+    {
+        // Are you sure popup
     }
 }
