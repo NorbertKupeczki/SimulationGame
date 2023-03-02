@@ -100,9 +100,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <UnitData>k__BackingField: {fileID: 0}
-  <IsBusy>k__BackingField: 0
+  <CurrentActivity>k__BackingField: 0
   <Energy>k__BackingField: 0
   <Water>k__BackingField: 0
+  <Resources>k__BackingField: 0
   _goal: {fileID: 0}
 --- !u!195 &8554875867598830207
 NavMeshAgent:

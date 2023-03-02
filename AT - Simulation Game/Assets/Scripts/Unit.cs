@@ -25,10 +25,7 @@ public class Unit : MonoBehaviour
     // private Queue<UnitActivity> _taskQueue;
 
     private void Awake()
-    {
-        _nav = GetComponent<NavMeshAgent>();
-        InitUnit();
-
+    {   
         //Subscribing to UnitManager events
         UnitManager _um = FindObjectOfType<UnitManager>();
         _um.UpdateFatigueEvent += OnUpdateFatigue;
@@ -37,13 +34,16 @@ public class Unit : MonoBehaviour
 
     void Start()
     {
+        InitUnit();
         UnitData.UnitBehaviour.InitManagers();
-        CurrentActivity = GetNextTask();
     }
 
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            CurrentActivity = GetNextTask();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -106,6 +106,7 @@ public class Unit : MonoBehaviour
 
     private void InitUnit()
     {
+        _nav = GetComponent<NavMeshAgent>();
         _nav.speed = UnitData.Speed;
         CurrentActivity = UnitActivity.IDLE;
         Energy = 100;
