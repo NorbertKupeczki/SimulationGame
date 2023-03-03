@@ -15,6 +15,11 @@ public class SelectionMarker : MonoBehaviour
 
     public void SetBuilding(GameObject target, ISelectable selectedInterface)
     {
+        if (selectedInterface != _selectedBuilding)
+        {
+            CancelSelection();
+        }
+
         transform.position = new Vector3(target.transform.position.x, 0.003f, target.transform.position.z);
         _selectedBuilding = selectedInterface;
         _selectedBuilding.IsSelected();

@@ -9,7 +9,7 @@ public class DemolishHandler : MonoBehaviour
     private CursorManager _cm;
     private SelectionMarker _marker;
     private ResourceManager _rm;
-
+    private NavMeshUpdater _nav;
     private void Awake()
     {
         _panel.SetActive(false);
@@ -20,6 +20,7 @@ public class DemolishHandler : MonoBehaviour
         _cm = FindObjectOfType<CursorManager>();
         _marker = FindObjectOfType<SelectionMarker>();
         _rm = FindObjectOfType<ResourceManager>();
+        _nav = FindObjectOfType<NavMeshUpdater>();
     }
 
     public void EnablePanel()
@@ -36,6 +37,7 @@ public class DemolishHandler : MonoBehaviour
         _panel?.SetActive(false);
         _cm.DemolishInactive();
 
+        _nav.RefreshNavMeshAtEndOfFrame();
     }
 
     public void CancelDemolition()

@@ -4,13 +4,14 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using static GameData;
 
-public class Mill : MonoBehaviour, IBuildingInteraction
+public class Mill : MonoBehaviour, IBuildingInteraction, ISelectable
 {
     [SerializeField] private GameObject _blades;
     [SerializeField][Range(0.0f, 80.0f)] private float _rotationSpeed = 0.0f;
     [SerializeField][Range(0.5f, 0.9f)] private float _lerpSpeed = 0.7f;
     [SerializeField] private bool _bladesRotationOn = false;
     [SerializeField] BuildingSO _buildingData;
+    [SerializeField] private GameObject _buttonsPanel;
 
     private const float _MAX_ROTATION_SPEED = 80.0f;
     private const float _ROTATION_TOLERANCE = 1.0f;
@@ -25,7 +26,7 @@ public class Mill : MonoBehaviour, IBuildingInteraction
     // Start is called before the first frame update
     void Start()
     {
-
+        _buttonsPanel = FindObjectOfType<BuildingsButtonManager>().GetPanelOfBuildingType(_buildingData.buildingType);
     }
 
     // Update is called once per frame
@@ -83,5 +84,36 @@ public class Mill : MonoBehaviour, IBuildingInteraction
     public BuildingType GetBuildingType()
     {
         return _buildingData.buildingType;
+    }
+
+    public void IsSelected()
+    {
+        _buttonsPanel.SetActive(true);
+    }
+
+    public void IsDeselected()
+    {
+        _buttonsPanel.SetActive(false);
+    }
+
+    public Transform GetTransform()
+    {
+        return transform;
+    }
+
+    public Transform GetInteractionPointTransform()
+    {
+        return _iPoint.transform;
+    }
+
+    public void DestroyBuilding()
+    {
+        FindObjectOfType<BuildingManager>().RemoveBuilding(gameObject);
+        Destroy(gameObject);
+    }
+
+    public BuildingSO GetBuildingData()
+    {
+        return _buildingData;
     }
 }

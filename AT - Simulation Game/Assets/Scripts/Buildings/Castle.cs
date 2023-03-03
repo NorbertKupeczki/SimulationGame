@@ -5,12 +5,16 @@ public class Castle : MonoBehaviour, IBuildingInteraction, ISelectable
 {
     [SerializeField] private InteractionPoint _iPoint;
     [SerializeField] private BuildingSO _buildingData;
-    [SerializeField] private GameObject _castleButtons;
+    [SerializeField] private GameObject _buttonsPanel;
 
     private void Awake()
     {
-        _castleButtons.SetActive(false);
         _iPoint = GetComponentInChildren<InteractionPoint>();
+    }
+
+    private void Start()
+    {
+        _buttonsPanel = FindObjectOfType<BuildingsButtonManager>().GetPanelOfBuildingType(_buildingData.buildingType);
     }
 
     public Collider GetInteractionCollider()
@@ -30,12 +34,12 @@ public class Castle : MonoBehaviour, IBuildingInteraction, ISelectable
 
     public void IsSelected()
     {
-        _castleButtons.SetActive(true);
+        _buttonsPanel.SetActive(true);
     }
 
     public void IsDeselected()
     {
-        _castleButtons.SetActive(false);
+        _buttonsPanel.SetActive(false);
     }
 
     public Transform GetTransform()
@@ -50,7 +54,7 @@ public class Castle : MonoBehaviour, IBuildingInteraction, ISelectable
 
     public void DestroyBuilding()
     {
-        Destroy(gameObject);
+        // Castle can't be destroyed
     }
 
     public BuildingSO GetBuildingData()

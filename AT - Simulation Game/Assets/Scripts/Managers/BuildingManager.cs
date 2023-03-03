@@ -7,7 +7,7 @@ using static GameData;
 
 public class BuildingManager : MonoBehaviour
 {
-    [SerializeField] ResourceManager _resourceManager;
+    [SerializeField] private ResourceManager _resourceManager;
     [SerializeField] private NavMeshUpdater _navMeshManager;
     [SerializeField] NavMeshBuildSource _buildSource;
 
@@ -111,7 +111,11 @@ public class BuildingManager : MonoBehaviour
 
     public async Task<GameObject> GetClosestBuilding(BuildingType buildingType, Vector3 position)
     {
-        if (_masterList[_buildingLists[buildingType]].Count == 1)
+        if(_masterList[_buildingLists[buildingType]].Count == 0)
+        {
+            return null;
+        }
+        else if (_masterList[_buildingLists[buildingType]].Count == 1)
         {
             return _masterList[_buildingLists[buildingType]][0];
         }
@@ -135,5 +139,13 @@ public class BuildingManager : MonoBehaviour
         return null;
     }
 
+    public void RemoveBuilding(GameObject building)
+    {
+        _masterList[_buildingLists[building.GetComponent<ISelectable>().GetBuildingData().buildingType]].Remove(building);
+    }
 
+    public bool CheckAvailableBuildingsOfType(BuildingType type)
+    {
+        return _masterList[_buildingLists[type]].Count > 0;
+    }
 }

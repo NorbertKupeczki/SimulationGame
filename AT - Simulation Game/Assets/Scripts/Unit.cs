@@ -21,6 +21,17 @@ public class Unit : MonoBehaviour
 
     private IBuildingInteraction _iFace;
     private NavMeshAgent _nav;
+    private BuildingManager _buildingManager;
+
+    private delegate IEnumerator DestinationChecker();
+    private delegate IEnumerator ResourceChecker();
+    private DestinationChecker _destinationCheckerFunc;
+    private ResourceChecker _resourceCheckerFunc;
+
+    private Coroutine _destinationCheckerCoroutine;
+    private Coroutine _resourceCheckerCoroutine;
+
+    private WaitForSeconds _destinationCheckDelay = new WaitForSeconds(DESTINATION_CHECK_DELAY);
 
     // private Queue<UnitActivity> _taskQueue;
 
@@ -30,10 +41,14 @@ public class Unit : MonoBehaviour
         UnitManager _um = FindObjectOfType<UnitManager>();
         _um.UpdateFatigueEvent += OnUpdateFatigue;
         _um.UpdateThirstEvent += OnUpdateThirst;
+
+        _destinationCheckerFunc = DestinationCheck;
+        _resourceCheckerFunc = ResourceCheck;
     }
 
     void Start()
     {
+        _buildingManager = FindObjectOfType<BuildingManager>();
         InitUnit();
         UnitData.UnitBehaviour.InitManagers();
         CurrentActivity = GetNextTask();
@@ -56,7 +71,6 @@ public class Unit : MonoBehaviour
 
         if (other == _iFace.GetInteractionCollider())
         {
-            Debug.Log("Destination reached");
             if (_iFace.GetBuildingType() == UnitData.UnitBehaviour.ResourceBuilding)
             {
                 CurrentActivity = UnitData.UnitBehaviour.CollectingActivity;
@@ -85,8 +99,11 @@ public class Unit : MonoBehaviour
     private void OnDestroy()
     {
         UnitManager _um = FindObjectOfType<UnitManager>();
-        _um.UpdateFatigueEvent -= OnUpdateFatigue;
-        _um.UpdateThirstEvent -= OnUpdateThirst;
+        if (_um != null)
+        {
+            _um.UpdateFatigueEvent -= OnUpdateFatigue;
+            _um.UpdateThirstEvent -= OnUpdateThirst;
+        }
     }
 
     public void ResetUnitActivities()
@@ -102,7 +119,7 @@ public class Unit : MonoBehaviour
 
     private GameObject SearchClosestBuildingOfType(BuildingType type)
     {
-        return FindObjectOfType<BuildingManager>().GetClosestBuilding(type, transform.position).GetAwaiter().GetResult();
+        return _buildingManager.GetClosestBuilding(type, transform.position).GetAwaiter().GetResult();
     }
 
     private void InitUnit()
@@ -166,25 +183,35 @@ public class Unit : MonoBehaviour
         {
             //If farmer, check if any of the fields need plowing
 
-            SetDestination(UnitData.UnitBehaviour.ResourceBuilding, false);
+            SetDestination();
             return UnitData.UnitBehaviour.MovingToResourceActivity;
         }
         else
         {
-            SetDestination(UnitData.UnitBehaviour.DropOffBuilding, true);
+            SetDestination();
             return UnitData.UnitBehaviour.MovingToDropOffActivity;
         }
     }
 
-    private void SetDestination(BuildingType targetBuilding, bool dropOff)
+    private void SetDestination()
     {
-        if (dropOff)
+        if (Resources > 0)
         {
             GameObject nearestCastle = SearchClosestBuildingOfType(BuildingType.CASTLE);
-            GameObject nearestTarget = SearchClosestBuildingOfType(targetBuilding);
+            GameObject nearestDropOff = SearchClosestBuildingOfType(UnitData.UnitBehaviour.DropOffBuilding);
 
-            float toCastle = Vector3.Distance(nearestCastle.transform.position, gameObject.transform.position);
-            float toTarget = Vector3.Distance(nearestTarget.transform.position, gameObject.transform.position);
+            float toCastle = float.MaxValue;
+            float toTarget = float.MaxValue;
+
+            if (nearestCastle != null)
+            {
+                toCastle = Vector3.Distance(nearestCastle.transform.position, gameObject.transform.position);
+            }
+
+            if (nearestDropOff != null)
+            {
+                toTarget = Vector3.Distance(nearestDropOff.transform.position, gameObject.transform.position);
+            }
             
             if (toCastle < toTarget)
             {
@@ -192,22 +219,94 @@ public class Unit : MonoBehaviour
             }
             else
             {
-                _goal = nearestTarget;
+                _goal = nearestDropOff;
             }
         }
         else
         {
-            _goal = SearchClosestBuildingOfType(targetBuilding);
+            _goal = SearchClosestBuildingOfType(UnitData.UnitBehaviour.ResourceBuilding);
+
         }
 
-        _iFace = _goal.GetComponent<IBuildingInteraction>();
-
-        if (!_nav.SetDestination(_iFace.GetInteractionDestination()))
+        if (_goal != null)
         {
-            NavMesh.SamplePosition(_iFace.GetInteractionDestination(), out NavMeshHit hit, MESH_SEARCH_AREA, NavMesh.AllAreas);
-            _nav.SetDestination(hit.position);
+            _iFace = _goal.GetComponent<IBuildingInteraction>();
+
+            if (!_nav.SetDestination(_iFace.GetInteractionDestination()))
+            {
+                NavMesh.SamplePosition(_iFace.GetInteractionDestination(), out NavMeshHit hit, MESH_SEARCH_AREA, NavMesh.AllAreas);
+                _nav.SetDestination(hit.position);
+            }
+
+            _nav.isStopped = false;
+
+            StartCheckingDestination();
+        }
+        else
+        {
+            CurrentActivity = UnitActivity.IDLE;
+            StartCheckingForAvailableResources();
         }
 
-        _nav.isStopped = false;
+        
+    }
+
+    private void StartCheckingDestination()
+    {
+        if (_destinationCheckerCoroutine != null)
+        {
+            StopCoroutine(_destinationCheckerCoroutine);
+        }
+
+        _destinationCheckerCoroutine = StartCoroutine(_destinationCheckerFunc());
+    }
+
+    private void StartCheckingForAvailableResources()
+    {
+        if (_resourceCheckerCoroutine != null)
+        {
+            StopCoroutine(_resourceCheckerCoroutine);
+        }
+
+        _resourceCheckerCoroutine = StartCoroutine(_resourceCheckerFunc());
+    }
+
+    private IEnumerator DestinationCheck()
+    {
+        while (true)
+        {
+            yield return _destinationCheckDelay;
+
+            if (_goal == null)
+            {
+                break;
+            }
+        }
+
+        StartCoroutine(NewDestinationAtEndOfFrame());
+        yield break;
+    }
+
+    private IEnumerator NewDestinationAtEndOfFrame()
+    {
+        yield return new WaitForEndOfFrame();
+        SetDestination();
+        yield break;
+    }
+
+    private IEnumerator ResourceCheck()
+    {
+        while (true)
+        {
+            yield return _destinationCheckDelay;
+
+            if (_buildingManager.CheckAvailableBuildingsOfType(UnitData.UnitBehaviour.ResourceBuilding))
+            {
+                break;
+            }
+        }
+
+        StartCoroutine(NewDestinationAtEndOfFrame());
+        yield break;
     }
 }

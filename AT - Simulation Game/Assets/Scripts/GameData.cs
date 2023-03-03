@@ -22,6 +22,8 @@ public static class GameData
 
     public const float REFUND_FACTOR = 0.5f;
 
+    public const float DESTINATION_CHECK_DELAY = 0.2f;
+
     public enum UnitType
     {
         WORKER = 0,

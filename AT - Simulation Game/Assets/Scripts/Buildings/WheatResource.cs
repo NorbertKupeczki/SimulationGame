@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using static GameData;
 
-public class WheatResource : MonoBehaviour, IBuildingInteraction
+public class WheatResource : MonoBehaviour, IBuildingInteraction, ISelectable
 {
     [Header ("Base data")]
     [SerializeField] private GameObject _resource;
     [SerializeField] [Range (0.0f,100.0f)] private float _growth;
     [SerializeField] WheatState _state;
     [SerializeField] BuildingSO _buildingData;
+    [SerializeField] private GameObject _buttonsPanel;
 
     [Header("TESTING")]
     [SerializeField] bool _harvest = false;
@@ -46,7 +47,7 @@ public class WheatResource : MonoBehaviour, IBuildingInteraction
     // Start is called before the first frame update
     void Start()
     {
-        
+        _buttonsPanel = FindObjectOfType<BuildingsButtonManager>().GetPanelOfBuildingType(_buildingData.buildingType);
     }
 
     // Update is called once per frame
@@ -133,5 +134,36 @@ public class WheatResource : MonoBehaviour, IBuildingInteraction
     public BuildingType GetBuildingType()
     {
         return _buildingData.buildingType;
+    }
+
+    public void IsSelected()
+    {
+        _buttonsPanel.SetActive(true);
+    }
+
+    public void IsDeselected()
+    {
+        _buttonsPanel.SetActive(false);
+    }
+
+    public Transform GetTransform()
+    {
+        return transform;
+    }
+
+    public Transform GetInteractionPointTransform()
+    {
+        return _iPoint.transform;
+    }
+
+    public void DestroyBuilding()
+    {
+        FindObjectOfType<BuildingManager>().RemoveBuilding(gameObject);
+        Destroy(gameObject);
+    }
+
+    public BuildingSO GetBuildingData()
+    {
+        return _buildingData;
     }
 }
