@@ -20,6 +20,8 @@ public static class GameData
     public const int ORE_YIELD = 10;
     public const int WHEAT_YIELD = 10;
 
+    public const float REFUND_FACTOR = 0.5f;
+
     public enum UnitType
     {
         WORKER = 0,
@@ -84,5 +86,7 @@ public interface ISelectable
     Transform GetInteractionPointTransform();
 
     void DestroyBuilding();
+
+    BuildingSO GetBuildingData();
 }
 

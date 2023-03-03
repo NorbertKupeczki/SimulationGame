@@ -36,14 +36,15 @@ public class Unit : MonoBehaviour
     {
         InitUnit();
         UnitData.UnitBehaviour.InitManagers();
+        CurrentActivity = GetNextTask();
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            CurrentActivity = GetNextTask();
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    CurrentActivity = GetNextTask();
+        //}
     }
 
     private void OnTriggerEnter(Collider other)

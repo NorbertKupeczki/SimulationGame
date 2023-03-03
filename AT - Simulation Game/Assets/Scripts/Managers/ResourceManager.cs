@@ -4,6 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using static GameData;
 
 public class ResourceManager : MonoBehaviour
 {
@@ -215,6 +216,14 @@ public class ResourceManager : MonoBehaviour
         else if (!HasEnoughOre(buildingData._oreCost)) return false;
         else if (!HasEnoughWheat(buildingData._wheatCost)) return false;
         return true;
+    }
+
+    public void RefundBuildingCost(BuildingSO buildingData)
+    {
+        GainCoins(Mathf.FloorToInt(buildingData._coinCost * REFUND_FACTOR));
+        GainWood(Mathf.FloorToInt(buildingData._woodCost * REFUND_FACTOR));
+        GainOre(Mathf.FloorToInt(buildingData._oreCost * REFUND_FACTOR));
+        GainWheat(Mathf.FloorToInt(buildingData._wheatCost * REFUND_FACTOR));
     }
 
     private IEnumerator UpdateButtonStates()

@@ -24,7 +24,8 @@ public class CursorManager : MonoBehaviour
     public enum PointerType
     {
         DEFAULT = 0,
-        PLACEMENT = 1
+        PLACEMENT = 1,
+        DEMOLISH = 3
     }
     
     private void Awake()
@@ -68,6 +69,12 @@ public class CursorManager : MonoBehaviour
             {
                 CancelBuildingPlacement();
             }
+            else if (_pointerType == PointerType.DEMOLISH &&
+                     CheckRaycastResults(results))
+            {
+
+                CancelDemolition();
+            }
             return;
         }
 
@@ -88,7 +95,11 @@ public class CursorManager : MonoBehaviour
         else if (_pointerType == PointerType.PLACEMENT)
         {
             PlaceBuilding(_buildPosition);
-        }            
+        }
+        else if (_pointerType == PointerType.DEMOLISH)
+        {
+            CancelDemolition();
+        }
         
     }
 
@@ -139,9 +150,32 @@ public class CursorManager : MonoBehaviour
         _pointerType = PointerType.DEFAULT;
     }
 
+    public void DemolishActive()
+    {
+        _pointerType = PointerType.DEMOLISH;
+    }
+
+    public void DemolishInactive()
+    {
+        if (_pointerType != PointerType.PLACEMENT)
+        {
+            _pointerType = PointerType.DEFAULT;
+        }
+    }
+
+    private void CancelDemolition()
+    {
+        FindObjectOfType<DemolishHandler>().CancelDemolition();
+        _pointerType = PointerType.DEFAULT;
+    }
+
     private void SwitchToPlacementMode()
     {
         _placementMarker.SetProjector(true);
+        if (_pointerType == PointerType.DEMOLISH)
+        {
+            CancelDemolition();
+        }
         _pointerType = PointerType.PLACEMENT;
     }
 
@@ -151,5 +185,17 @@ public class CursorManager : MonoBehaviour
         Physics.Raycast(ray, out RaycastHit raycastHit, 300.0f, LayerMask.GetMask("Ground"));
         _placementMarker.transform.position = new Vector3(raycastHit.point.x, 0.003f, raycastHit.point.z);
         _buildPosition = raycastHit.point;
+    }
+
+    private bool CheckRaycastResults(List<RaycastResult> results)
+    {
+        foreach(RaycastResult result in results)
+        {
+            if(result.gameObject.GetComponentInParent<DemolishHandler>())
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

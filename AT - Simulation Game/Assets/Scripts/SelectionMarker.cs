@@ -39,4 +39,9 @@ public class SelectionMarker : MonoBehaviour
     {
         return _selectedBuilding.GetInteractionPointTransform();
     }
+
+    public ISelectable GetSelectedBuildingInterface()
+    {
+        return _selectedBuilding;
+    }
 }

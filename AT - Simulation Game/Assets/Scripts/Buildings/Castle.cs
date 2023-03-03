@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static GameData;
 
@@ -52,6 +50,11 @@ public class Castle : MonoBehaviour, IBuildingInteraction, ISelectable
 
     public void DestroyBuilding()
     {
-        // Are you sure popup
+        Destroy(gameObject);
+    }
+
+    public BuildingSO GetBuildingData()
+    {
+        return _buildingData;
     }
 }
