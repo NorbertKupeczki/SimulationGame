@@ -121,19 +121,19 @@ public class BuildingManager : MonoBehaviour
         }
         else if (_masterList[_buildingLists[buildingType]].Count > 1)
         {
-            GameObject result = new GameObject();
+            int resultIndex = 0;
             float distance = float.MaxValue;
 
-            foreach (GameObject go in _masterList[_buildingLists[buildingType]])
+            for (int i = 0; i < _masterList[_buildingLists[buildingType]].Count; ++i)
             {
-                float currDist = Vector3.Distance(go.transform.position, position);
+                float currDist = Vector3.Distance(_masterList[_buildingLists[buildingType]][i].transform.position, position);
                 if (currDist < distance)
                 {
                     distance = currDist;
-                    result = go;
+                    resultIndex = i;
                 }
             }
-            return result;
+            return _masterList[_buildingLists[buildingType]][resultIndex];
         }
         await Task.Yield();
         return null;
