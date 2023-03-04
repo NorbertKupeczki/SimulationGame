@@ -6621,6 +6621,11 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1371566188187618147, guid: 405be4e92810920488a8ac798fd7d9b8,
+        type: 3}
+      propertyPath: _bladesRotationOn
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1542140998708076623, guid: 405be4e92810920488a8ac798fd7d9b8,
         type: 3}
       propertyPath: _lerpSpeed
@@ -9283,7 +9288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10d80ce19c6e87b4cb59659e95a63487, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startingCoins: 100
+  _startingCoins: 500
   _startingWood: 50
   _startingOre: 0
   _startingWheat: 50

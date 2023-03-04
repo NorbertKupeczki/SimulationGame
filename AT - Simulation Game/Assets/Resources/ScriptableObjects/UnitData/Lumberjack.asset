@@ -16,5 +16,5 @@ MonoBehaviour:
   UnitType: 3
   Speed: 2
   Color: {r: 0.2508543, g: 0.5188679, b: 0.056292284, a: 0}
-  BuildingType: 9
   UnitBehaviour: {fileID: 11400000, guid: 1e41d39070572ff4e8dd84f4725d020c, type: 2}
+  Tool: {fileID: 919132149155446097, guid: 9f72deb69c4b8bd4484cfd164e70e89b, type: 3}

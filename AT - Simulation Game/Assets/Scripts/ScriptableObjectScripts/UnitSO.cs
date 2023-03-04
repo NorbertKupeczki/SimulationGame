@@ -9,4 +9,5 @@ public class UnitSO : ScriptableObject
     public float Speed;
     public Color Color;
     public UnitBehaviour UnitBehaviour;
+    public GameObject Tool;
 }

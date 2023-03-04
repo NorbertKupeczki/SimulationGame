@@ -17,3 +17,4 @@ MonoBehaviour:
   Speed: 2
   Color: {r: 0, g: 0.47564286, b: 0.8113208, a: 0}
   UnitBehaviour: {fileID: 11400000, guid: 6f1d79599a6c56f4e8ddac5fed7661dd, type: 2}
+  Tool: {fileID: 919132149155446097, guid: 41659e7a34134654396db12d195369cb, type: 3}

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using static GameData;
-using static UnityEngine.Rendering.DebugUI;
 
 public class Unit : MonoBehaviour
 {
@@ -19,6 +18,7 @@ public class Unit : MonoBehaviour
 
     [Header ("Interactions")]
     [SerializeField] private GameObject _goal;
+    [SerializeField] private Transform _toolHolder;
 
     private IBuildingInteraction _iFace;
     private NavMeshAgent _nav;
@@ -35,6 +35,7 @@ public class Unit : MonoBehaviour
     private WaitForSeconds _destinationCheckDelay = new WaitForSeconds(DESTINATION_CHECK_DELAY);
 
     private GameObject _designatedFarm = null;
+    private GameObject _tool;
 
     // private Queue<UnitActivity> _taskQueue;
 
@@ -55,11 +56,6 @@ public class Unit : MonoBehaviour
         InitUnit();
         UnitData.UnitBehaviour.InitManagers();
         CurrentActivity = GetNextTask();
-    }
-
-    void Update()
-    {
-       
     }
 
     private void OnTriggerEnter(Collider other)
@@ -134,6 +130,7 @@ public class Unit : MonoBehaviour
         }
 
         UnitData.UnitBehaviour.InitManagers();
+        InitTool();
         CurrentActivity = UnitActivity.IDLE;
         _goal = null;
         _iFace = null;
@@ -142,19 +139,30 @@ public class Unit : MonoBehaviour
         CurrentActivity = GetNextTask();
     }
 
-    private GameObject SearchClosestBuildingOfType(BuildingType type)
-    {
-        return _buildingManager.GetClosestBuilding(type, transform.position).GetAwaiter().GetResult();
-    }
-
     private void InitUnit()
     {
         _nav = GetComponent<NavMeshAgent>();
         _nav.speed = UnitData.Speed;
+        InitTool();
         CurrentActivity = UnitActivity.IDLE;
         Energy = 100;
         Water = 100;
         Resources = 0;
+    }
+
+    private void InitTool()
+    {
+        if (_tool != null)
+        {
+            Destroy(_tool);
+        }
+
+        _tool = Instantiate(UnitData.Tool, _toolHolder);
+    }
+
+    private GameObject SearchClosestBuildingOfType(BuildingType type)
+    {
+        return _buildingManager.GetClosestBuilding(type, transform.position).GetAwaiter().GetResult();
     }
 
     private void OnUpdateThirst()
@@ -226,6 +234,7 @@ public class Unit : MonoBehaviour
     private void ToggleVisibility(bool value)
     {
         gameObject.GetComponent<MeshRenderer>().enabled = value;
+        _toolHolder.gameObject.SetActive(value);
     }
 
     private UnitActivity GetNextTask()

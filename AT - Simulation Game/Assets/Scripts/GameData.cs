@@ -10,8 +10,8 @@ public static class GameData
     public const float WATER_LOSS_MIN = 1.8f;
     public const float WATER_LOSS_MAX = 3.4f;
 
-    public const float ENERGY_LOSS_MIN = 0.6f;
-    public const float ENERGY_LOSS_MAX = 1.4f;
+    public const float ENERGY_LOSS_MIN = 0.5f;
+    public const float ENERGY_LOSS_MAX = 1.2f;
 
     public const float WATER_GAIN = 40.0f;
     public const float ENERGY_GAIN = 10.0f;
