@@ -148,4 +148,77 @@ public class BuildingManager : MonoBehaviour
     {
         return _masterList[_buildingLists[type]].Count > 0;
     }
+
+    public async Task<GameObject> GetClosestHarvestableFarm(Vector3 position)
+    {
+        if (_masterList[_buildingLists[BuildingType.FARM]].Count == 0)
+        {
+            return null;
+        }
+        else if (_masterList[_buildingLists[BuildingType.FARM]].Count > 0)
+        {
+            int farmIndex = -1;
+            float distance = float.MaxValue;
+
+            for (int i = 0; i < _masterList[_buildingLists[BuildingType.FARM]].Count; ++i)
+            {
+                GameObject farm = _masterList[_buildingLists[BuildingType.FARM]][i];
+
+                if (farm.GetComponent<WheatResource>().IsHarvestable() &&
+                    Vector3.Distance(farm.transform.position, position) < distance)
+                {
+                    farmIndex = i;
+                }
+            }
+
+            if (farmIndex > -1)
+            {
+                return _masterList[_buildingLists[BuildingType.FARM]][farmIndex];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        await Task.Yield();
+        return null;
+    }
+
+    public async Task<GameObject> GetClosestUnregisteredFarm(Vector3 position, GameObject unit)
+    {
+        if (_masterList[_buildingLists[BuildingType.FARM]].Count == 0)
+        {
+            return null;
+        }
+        else if (_masterList[_buildingLists[BuildingType.FARM]].Count > 0)
+        {
+            int farmIndex = -1;
+            float distance = float.MaxValue;
+
+            for (int i = 0; i < _masterList[_buildingLists[BuildingType.FARM]].Count; ++i)
+            {
+                GameObject farm = _masterList[_buildingLists[BuildingType.FARM]][i];
+
+                if (!farm.GetComponent<WheatResource>().HasFarmer() &&
+                    Vector3.Distance(farm.transform.position, position) < distance)
+                {
+                    farmIndex = i;
+                }
+            }
+
+            if (farmIndex > -1)
+            {
+                _masterList[_buildingLists[BuildingType.FARM]][farmIndex].GetComponent<WheatResource>().RegisterFarmer(unit);
+                return _masterList[_buildingLists[BuildingType.FARM]][farmIndex];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        await Task.Yield();
+        return null;
+    }
 }

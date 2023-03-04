@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using static GameData;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Unit : MonoBehaviour
 {
@@ -33,6 +34,8 @@ public class Unit : MonoBehaviour
 
     private WaitForSeconds _destinationCheckDelay = new WaitForSeconds(DESTINATION_CHECK_DELAY);
 
+    private GameObject _designatedFarm = null;
+
     // private Queue<UnitActivity> _taskQueue;
 
     private void Awake()
@@ -56,10 +59,7 @@ public class Unit : MonoBehaviour
 
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    CurrentActivity = GetNextTask();
-        //}
+       
     }
 
     private void OnTriggerEnter(Collider other)
@@ -73,8 +73,17 @@ public class Unit : MonoBehaviour
         {
             if (_iFace.GetBuildingType() == UnitData.UnitBehaviour.ResourceBuilding)
             {
-                CurrentActivity = UnitData.UnitBehaviour.CollectingActivity;
-                StartCoroutine(UnitData.UnitBehaviour.CollectingResource(OnResourceCollectingDone));
+                if (_goal.TryGetComponent(out WheatResource farm) && farm.IsHarvested())
+                {
+                    Farmer farmer = (Farmer)UnitData.UnitBehaviour;
+                    StartCoroutine(farmer.PlowField(OnPlowingDone));
+                }
+                else
+                {
+                    CurrentActivity = UnitData.UnitBehaviour.CollectingActivity;
+                    StartCoroutine(UnitData.UnitBehaviour.CollectingResource(OnResourceCollectingDone));
+                }
+
                 ToggleVisibility(false);
             }
             else if (_iFace.GetBuildingType() == UnitData.UnitBehaviour.DropOffBuilding ||
@@ -84,6 +93,16 @@ public class Unit : MonoBehaviour
                 CurrentActivity = UnitData.UnitBehaviour.UnloadingActivity;
                 StartCoroutine(UnitData.UnitBehaviour.UnloadResource(OnResourceUnloadingDone));
             }
+            else if (_iFace.GetBuildingType() == BuildingType.HOUSE)
+            {
+                CurrentActivity = UnitActivity.RESTING;
+                ToggleVisibility(false);
+            }
+            else if (_iFace.GetBuildingType() == BuildingType.WELL)
+            {
+                CurrentActivity = UnitActivity.DRINKING;
+            }
+
             _nav.isStopped = true;
         }
     }
@@ -108,6 +127,12 @@ public class Unit : MonoBehaviour
 
     public void ResetUnitActivities()
     {
+        if (_designatedFarm != null)
+        {
+            _designatedFarm.GetComponent<WheatResource>().UnregisterFarmer();
+            _designatedFarm = null;
+        }
+
         UnitData.UnitBehaviour.InitManagers();
         CurrentActivity = UnitActivity.IDLE;
         _goal = null;
@@ -134,22 +159,48 @@ public class Unit : MonoBehaviour
 
     private void OnUpdateThirst()
     {
-        // If at a well > Gain water
-        // Else > Reduce water
-        // Some logic if the worker is below a certain water level
+        if (CurrentActivity == UnitActivity.DRINKING &&
+            _iFace.GetBuildingType() == BuildingType.WELL)
+        {
+            Water += WATER_GAIN;
+
+            if (Water >= 100)
+            {
+                Water = 100;
+                CurrentActivity = GetNextTask();
+            }
+        }
+        else
+        {
+            Water -= Random.Range(WATER_LOSS_MIN, WATER_LOSS_MAX);
+        }
     }
 
     private void OnUpdateFatigue()
     {
-        // If in house > Gain energy
-        // Else > Reduce energy
-        // Some logic if the worker is below a certain energy level
+        if (CurrentActivity == UnitActivity.RESTING &&
+            _iFace.GetBuildingType() == BuildingType.HOUSE)
+        {
+            Energy += ENERGY_GAIN;
+
+            if (Energy >= 100)
+            {
+                Energy = 100;
+                ToggleVisibility(true);
+                CurrentActivity = GetNextTask();
+            }
+        }
+        else
+        {
+            Energy -= Random.Range(ENERGY_LOSS_MIN, ENERGY_LOSS_MAX);
+        }
     }
 
     private void OnResourceCollectingDone(int value)
     {
         ToggleVisibility(true);
         Resources = value;
+        _iFace.InteractWithBuilding();
         _nav.isStopped = false;
         CurrentActivity = GetNextTask();
     }
@@ -158,8 +209,30 @@ public class Unit : MonoBehaviour
     {
         UnitData.UnitBehaviour.AddResourceToStockpile(Resources);
         Resources = 0;
+        _iFace.InteractWithBuilding();
         _nav.isStopped = false;
         CurrentActivity = GetNextTask();
+    }
+
+    private void OnPlowingDone()
+    {
+        ToggleVisibility(true);
+        _iFace.InteractWithBuilding();
+        _nav.isStopped = false;
+
+        _goal = GetClosestMillOrCastle();
+        _iFace = _goal.GetComponent<IBuildingInteraction>();
+        CurrentActivity = UnitActivity.DELIVERING_GOODS;
+
+        if (!_nav.SetDestination(_iFace.GetInteractionDestination()))
+        {
+            NavMesh.SamplePosition(_iFace.GetInteractionDestination(), out NavMeshHit hit, MESH_SEARCH_AREA, NavMesh.AllAreas);
+            _nav.SetDestination(hit.position);
+        }
+
+        _nav.isStopped = false;
+
+        StartCheckingDestination();
     }
 
     private void ToggleVisibility(bool value)
@@ -171,18 +244,35 @@ public class Unit : MonoBehaviour
     {
         if (Energy < FATIGUE_THRESHOLD)
         {
+            GoToNearestHouse();
             return UnitActivity.GOING_TO_REST;
         }
 
         if (Water < THIRST_THRESHOLD)
         {
+            GoToNearestWell();
             return UnitActivity.GOING_TO_DRINK;
         }
 
-        if (Resources == 0)
+        if (Resources == 0 && _designatedFarm != null)
         {
-            //If farmer, check if any of the fields need plowing
-
+            if (_designatedFarm.GetComponent<WheatResource>().IsHarvestable())
+            {
+                _goal = _designatedFarm;
+                _iFace = _goal.GetComponent<IBuildingInteraction>();
+                _nav.SetDestination(_iFace.GetInteractionDestination());
+                _nav.isStopped = false;
+                StartCheckingDestination();
+                return UnitData.UnitBehaviour.MovingToResourceActivity;
+            }
+            else
+            {
+                StartCheckingForAvailableResources();
+                return UnitActivity.IDLE;
+            }
+        }
+        else if (Resources == 0)
+        {
             SetDestination();
             return UnitData.UnitBehaviour.MovingToResourceActivity;
         }
@@ -190,6 +280,52 @@ public class Unit : MonoBehaviour
         {
             SetDestination();
             return UnitData.UnitBehaviour.MovingToDropOffActivity;
+        }
+    }
+
+    private void GoToNearestWell()
+    {
+        _goal = _buildingManager.GetClosestBuilding(BuildingType.WELL, transform.position).GetAwaiter().GetResult();
+        _iFace = _goal.GetComponent<IBuildingInteraction>();
+        _nav.SetDestination(_iFace.GetInteractionDestination());
+        _nav.isStopped = false;
+        StartCheckingDestination();
+    }
+
+    private void GoToNearestHouse()
+    {
+        _goal = _buildingManager.GetClosestBuilding(BuildingType.HOUSE, transform.position).GetAwaiter().GetResult();
+        _iFace = _goal.GetComponent<IBuildingInteraction>();
+        _nav.SetDestination(_iFace.GetInteractionDestination());
+        _nav.isStopped = false;
+        StartCheckingDestination();
+    }
+
+    private GameObject GetClosestMillOrCastle()
+    {
+        GameObject nearestCastle = SearchClosestBuildingOfType(BuildingType.CASTLE);
+        GameObject nearestMill = SearchClosestBuildingOfType(BuildingType.MILL);
+
+        float toCastle = float.MaxValue;
+        float toTarget = float.MaxValue;
+
+        if (nearestCastle != null)
+        {
+            toCastle = Vector3.Distance(nearestCastle.transform.position, gameObject.transform.position);
+        }
+
+        if (nearestMill != null)
+        {
+            toTarget = Vector3.Distance(nearestMill.transform.position, gameObject.transform.position);
+        }
+
+        if (toCastle < toTarget)
+        {
+            return nearestCastle;
+        }
+        else
+        {
+            return nearestMill;
         }
     }
 
@@ -222,12 +358,11 @@ public class Unit : MonoBehaviour
                 _goal = nearestDropOff;
             }
         }
-        else
+        else if (UnitData.UnitType != UnitType.FARMER)
         {
             _goal = SearchClosestBuildingOfType(UnitData.UnitBehaviour.ResourceBuilding);
-
         }
-
+        
         if (_goal != null)
         {
             _iFace = _goal.GetComponent<IBuildingInteraction>();
@@ -246,9 +381,7 @@ public class Unit : MonoBehaviour
         {
             CurrentActivity = UnitActivity.IDLE;
             StartCheckingForAvailableResources();
-        }
-
-        
+        }        
     }
 
     private void StartCheckingDestination()
@@ -277,7 +410,8 @@ public class Unit : MonoBehaviour
         {
             yield return _destinationCheckDelay;
 
-            if (_goal == null)
+            if (_goal == null ||
+                !_iFace.IsAvailable())
             {
                 break;
             }
@@ -298,15 +432,32 @@ public class Unit : MonoBehaviour
     {
         while (true)
         {
+            Debug.Log("Resource Check");
             yield return _destinationCheckDelay;
 
-            if (_buildingManager.CheckAvailableBuildingsOfType(UnitData.UnitBehaviour.ResourceBuilding))
+            if (UnitData.UnitType == UnitType.FARMER && _designatedFarm != null)
             {
-                break;
+                if (_designatedFarm.GetComponent<WheatResource>().IsHarvestable() ||
+                    _designatedFarm.GetComponent<WheatResource>().IsHarvested())
+                {
+                    _goal = _designatedFarm;
+                    _iFace = _goal.GetComponent<IBuildingInteraction>();
+                    _nav.SetDestination(_iFace.GetInteractionDestination());
+                    _nav.isStopped = false;
+                    CurrentActivity = UnitActivity.GOING_TO_FARM;
+                    StartCheckingDestination();
+                    yield break;
+                }
+            }
+            else if (UnitData.UnitType == UnitType.FARMER && _designatedFarm == null)
+            {
+                _designatedFarm = _buildingManager.GetClosestUnregisteredFarm(transform.position, gameObject).GetAwaiter().GetResult();
+            }
+            else if (_buildingManager.CheckAvailableBuildingsOfType(UnitData.UnitBehaviour.ResourceBuilding))
+            {
+                StartCoroutine(NewDestinationAtEndOfFrame());
+                yield break;
             }
         }
-
-        StartCoroutine(NewDestinationAtEndOfFrame());
-        yield break;
     }
 }

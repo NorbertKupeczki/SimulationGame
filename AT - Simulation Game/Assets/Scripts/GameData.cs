@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public static class GameData
@@ -9,7 +7,18 @@ public static class GameData
     public const float THIRST_THRESHOLD = 30.0f;
     public const float FATIGUE_THRESHOLD = 30.0f;
 
-    public const float WOODCUTTING_TIME = 10.0f;
+    public const float WATER_LOSS_MIN = 1.8f;
+    public const float WATER_LOSS_MAX = 3.4f;
+
+    public const float ENERGY_LOSS_MIN = 0.6f;
+    public const float ENERGY_LOSS_MAX = 1.4f;
+
+    public const float WATER_GAIN = 40.0f;
+    public const float ENERGY_GAIN = 10.0f;
+
+    public const float SPEED_PENALTY = 0.25f;
+
+    public const float WOODCUTTING_TIME = 8.0f;
     public const float MINING_TIME = 10.0f;
     public const float HARVESTING_TIME = 2.0f;
     public const float UNLOADING_TIME = 1.0f;
@@ -75,6 +84,10 @@ public interface IBuildingInteraction
     Collider GetInteractionCollider();
 
     GameData.BuildingType GetBuildingType();
+
+    bool IsAvailable();
+
+    void InteractWithBuilding();
 }
 
 public interface ISelectable

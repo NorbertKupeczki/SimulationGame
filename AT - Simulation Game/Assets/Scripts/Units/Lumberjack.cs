@@ -17,8 +17,7 @@ public class Lumberjack : UnitBehaviour
     public override IEnumerator CollectingResource(Action<int> callBack)
     {
         yield return _woodcuttingTime;
-        Debug.Log("Woodcutting Done");
         callBack(WOOD_YIELD);
         yield return null;
-    }    
+    }
 }

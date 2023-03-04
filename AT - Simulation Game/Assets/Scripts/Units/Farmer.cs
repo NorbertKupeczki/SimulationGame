@@ -7,6 +7,7 @@ using static GameData;
 public class Farmer : UnitBehaviour
 {
     private WaitForSeconds _harvestingTime = new WaitForSeconds(HARVESTING_TIME);
+    private WaitForSeconds _plowingTime = new WaitForSeconds(SOWING_WHEAT_TIME);
 
     public override void AddResourceToStockpile(int value)
     {
@@ -16,8 +17,14 @@ public class Farmer : UnitBehaviour
     public override IEnumerator CollectingResource(Action<int> callBack)
     {
         yield return _harvestingTime;
-        Debug.Log("Woodcutting Done");
         callBack(WHEAT_YIELD);
+        yield return null;
+    }
+
+    public IEnumerator PlowField(Action callBack)
+    {
+        yield return _plowingTime;
+        callBack();
         yield return null;
     }
 }

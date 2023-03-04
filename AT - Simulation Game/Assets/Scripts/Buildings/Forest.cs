@@ -27,4 +27,14 @@ public class Forest : MonoBehaviour, IBuildingInteraction
     {
         return _buildingData.buildingType;
     }
+
+    public bool IsAvailable()
+    {
+        return true;
+    }
+
+    public void InteractWithBuilding()
+    {
+
+    }
 }

@@ -34,6 +34,16 @@ public class ArcheryRange : MonoBehaviour, IBuildingInteraction, ISelectable
         return _buildingData.buildingType;
     }
 
+    public bool IsAvailable()
+    {
+        return true;
+    }
+
+    public void InteractWithBuilding()
+    {
+
+    }
+
     public void IsSelected()
     {
         _buttonsPanel.SetActive(true);

@@ -115,7 +115,7 @@ public class UnitManager : MonoBehaviour
         Unit newUnit = Instantiate(_unitPrefab, spawnPosition.position, spawnPosition.rotation, gameObject.transform);
         newUnit.UnitData = _unitTypes[(int)type];
         newUnit.name = newUnit.UnitData.UnitName;
-        newUnit.GetComponent<Renderer>().material.color = newUnit.UnitData.Color;
+        newUnit.GetComponent<MeshRenderer>().material.color = newUnit.UnitData.Color;
         AddUnitToList(newUnit);
     }
 

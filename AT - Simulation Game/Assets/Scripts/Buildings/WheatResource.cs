@@ -12,10 +12,6 @@ public class WheatResource : MonoBehaviour, IBuildingInteraction, ISelectable
     [SerializeField] BuildingSO _buildingData;
     [SerializeField] private GameObject _buttonsPanel;
 
-    [Header("TESTING")]
-    [SerializeField] bool _harvest = false;
-    [SerializeField] bool _sow = false;
-
     private InteractionPoint _iPoint;
     private const float MAX_GROWTH = 100.0f;
     private const float GROWTH_TIME = 10.0f; // <<= Set to somehigher value for the final game
@@ -24,6 +20,8 @@ public class WheatResource : MonoBehaviour, IBuildingInteraction, ISelectable
     private Vector3 _harvestedPosition;
 
     private Coroutine _growingWheat_CR;
+
+    private GameObject _farmer;
 
     public enum WheatState
     {
@@ -44,26 +42,15 @@ public class WheatResource : MonoBehaviour, IBuildingInteraction, ISelectable
         _growingWheat_CR = StartCoroutine(GrowingWheat());
         _iPoint = GetComponentInChildren<InteractionPoint>();
     }
-    // Start is called before the first frame update
+    
     void Start()
     {
         _buttonsPanel = FindObjectOfType<BuildingsButtonManager>().GetPanelOfBuildingType(_buildingData.buildingType);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (_sow)
-        {
-            Debug.Log("Wheat sown");
-            _sow = false;
-            SowWheat();
-        }
 
-        if (_harvest)
-        {
-            _harvest = false;
-        }
     }
 
     private void OnDisable()
@@ -71,23 +58,47 @@ public class WheatResource : MonoBehaviour, IBuildingInteraction, ISelectable
         StopCoroutine(_growingWheat_CR);
     }
 
-    public void Harvest() // << For testing it has been turned to void
+    public void RegisterFarmer(GameObject unit)
+    {
+        _farmer = unit;
+    }
+
+    public void UnregisterFarmer()
+    {
+        _farmer = null;
+    }
+
+    public bool HasFarmer()
+    {
+        return _farmer != null;
+    }
+
+    public bool IsHarvestable()
+    {
+        return _state == WheatState.RIPE;
+    }
+
+    public bool IsHarvested()
+    {
+        return _state == WheatState.HARVESTED;
+    }
+
+    private void Harvest()
     {
         if (_state == WheatState.RIPE)
         {
-            float resourceYield;
-            _resource.transform.localPosition = _harvestedPosition;
-            _state = WheatState.HARVESTED;
-            resourceYield = _growth;
-            _growth = 0.0f;
-            Debug.Log("Harvested " + resourceYield + " units of wheat");
-            //return resourceYield;
+            _growth -= WHEAT_YIELD;
+
+            if (_growth == 0)
+            {
+                _resource.transform.localPosition = _harvestedPosition;
+                _state = WheatState.HARVESTED;
+                _growth = 0.0f;
+            }            
         }
-        Debug.Log("Not ready to harvest yet!");
-        //return 0;
     }
 
-    public void SowWheat()
+    private void SowWheat()
     {
         if (_state == WheatState.HARVESTED)
         {
@@ -108,7 +119,6 @@ public class WheatResource : MonoBehaviour, IBuildingInteraction, ISelectable
                 {
                     _growth = MAX_GROWTH;
                     _resource.transform.localPosition = _ripePosition;
-                    Debug.Log("Wheat is ripe");
                     _state = WheatState.RIPE;
                 }
                 else
@@ -134,6 +144,23 @@ public class WheatResource : MonoBehaviour, IBuildingInteraction, ISelectable
     public BuildingType GetBuildingType()
     {
         return _buildingData.buildingType;
+    }
+
+    public bool IsAvailable()
+    {
+        return _state == WheatState.RIPE;
+    }
+
+    public void InteractWithBuilding()
+    {
+        if (IsHarvestable())
+        {
+            Harvest();
+        }
+        else if (IsHarvested())
+        {
+            SowWheat();
+        }
     }
 
     public void IsSelected()
