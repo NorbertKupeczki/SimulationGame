@@ -16,7 +16,6 @@ public class Miner : UnitBehaviour
     public override IEnumerator CollectingResource(Action<int> callBack)
     {
         yield return _minintTime;
-        Debug.Log("Woodcutting Done");
         callBack(ORE_YIELD);
         yield return null;
     }

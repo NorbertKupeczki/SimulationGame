@@ -218,20 +218,8 @@ public class Unit : MonoBehaviour
     {
         ToggleVisibility(true);
         _iFace.InteractWithBuilding();
-        _nav.isStopped = false;
 
-        _goal = GetClosestMillOrCastle();
-        _iFace = _goal.GetComponent<IBuildingInteraction>();
-        CurrentActivity = UnitActivity.DELIVERING_GOODS;
-
-        if (!_nav.SetDestination(_iFace.GetInteractionDestination()))
-        {
-            NavMesh.SamplePosition(_iFace.GetInteractionDestination(), out NavMeshHit hit, MESH_SEARCH_AREA, NavMesh.AllAreas);
-            _nav.SetDestination(hit.position);
-        }
-
-        _nav.isStopped = false;
-
+        GoToObject(GetClosestDropOffOrCastle());
         StartCheckingDestination();
     }
 
@@ -258,10 +246,7 @@ public class Unit : MonoBehaviour
         {
             if (_designatedFarm.GetComponent<WheatResource>().IsHarvestable())
             {
-                _goal = _designatedFarm;
-                _iFace = _goal.GetComponent<IBuildingInteraction>();
-                _nav.SetDestination(_iFace.GetInteractionDestination());
-                _nav.isStopped = false;
+                GoToObject(_designatedFarm);
                 StartCheckingDestination();
                 return UnitData.UnitBehaviour.MovingToResourceActivity;
             }
@@ -283,28 +268,34 @@ public class Unit : MonoBehaviour
         }
     }
 
+    private void GoToObject(GameObject destination)
+    {
+        _goal = destination;
+        _iFace = _goal.GetComponent<IBuildingInteraction>();
+        if (!_nav.SetDestination(_iFace.GetInteractionDestination()))
+        {
+            NavMesh.SamplePosition(_iFace.GetInteractionDestination(), out NavMeshHit hit, MESH_SEARCH_AREA, NavMesh.AllAreas);
+            _nav.SetDestination(hit.position);
+        }
+        _nav.isStopped = false;
+    }
+
     private void GoToNearestWell()
     {
-        _goal = _buildingManager.GetClosestBuilding(BuildingType.WELL, transform.position).GetAwaiter().GetResult();
-        _iFace = _goal.GetComponent<IBuildingInteraction>();
-        _nav.SetDestination(_iFace.GetInteractionDestination());
-        _nav.isStopped = false;
+        GoToObject(_buildingManager.GetClosestBuilding(BuildingType.WELL, transform.position).GetAwaiter().GetResult());
         StartCheckingDestination();
     }
 
     private void GoToNearestHouse()
     {
-        _goal = _buildingManager.GetClosestBuilding(BuildingType.HOUSE, transform.position).GetAwaiter().GetResult();
-        _iFace = _goal.GetComponent<IBuildingInteraction>();
-        _nav.SetDestination(_iFace.GetInteractionDestination());
-        _nav.isStopped = false;
+        GoToObject(_buildingManager.GetClosestBuilding(BuildingType.HOUSE, transform.position).GetAwaiter().GetResult());
         StartCheckingDestination();
     }
 
-    private GameObject GetClosestMillOrCastle()
+    private GameObject GetClosestDropOffOrCastle()
     {
         GameObject nearestCastle = SearchClosestBuildingOfType(BuildingType.CASTLE);
-        GameObject nearestMill = SearchClosestBuildingOfType(BuildingType.MILL);
+        GameObject nearestDropOff = SearchClosestBuildingOfType(UnitData.UnitBehaviour.DropOffBuilding);
 
         float toCastle = float.MaxValue;
         float toTarget = float.MaxValue;
@@ -314,9 +305,9 @@ public class Unit : MonoBehaviour
             toCastle = Vector3.Distance(nearestCastle.transform.position, gameObject.transform.position);
         }
 
-        if (nearestMill != null)
+        if (nearestDropOff != null)
         {
-            toTarget = Vector3.Distance(nearestMill.transform.position, gameObject.transform.position);
+            toTarget = Vector3.Distance(nearestDropOff.transform.position, gameObject.transform.position);
         }
 
         if (toCastle < toTarget)
@@ -325,7 +316,7 @@ public class Unit : MonoBehaviour
         }
         else
         {
-            return nearestMill;
+            return nearestDropOff;
         }
     }
 
@@ -333,30 +324,7 @@ public class Unit : MonoBehaviour
     {
         if (Resources > 0)
         {
-            GameObject nearestCastle = SearchClosestBuildingOfType(BuildingType.CASTLE);
-            GameObject nearestDropOff = SearchClosestBuildingOfType(UnitData.UnitBehaviour.DropOffBuilding);
-
-            float toCastle = float.MaxValue;
-            float toTarget = float.MaxValue;
-
-            if (nearestCastle != null)
-            {
-                toCastle = Vector3.Distance(nearestCastle.transform.position, gameObject.transform.position);
-            }
-
-            if (nearestDropOff != null)
-            {
-                toTarget = Vector3.Distance(nearestDropOff.transform.position, gameObject.transform.position);
-            }
-            
-            if (toCastle < toTarget)
-            {
-                _goal = nearestCastle;
-            }
-            else
-            {
-                _goal = nearestDropOff;
-            }
+            _goal = GetClosestDropOffOrCastle();
         }
         else if (UnitData.UnitType != UnitType.FARMER)
         {
@@ -365,16 +333,7 @@ public class Unit : MonoBehaviour
         
         if (_goal != null)
         {
-            _iFace = _goal.GetComponent<IBuildingInteraction>();
-
-            if (!_nav.SetDestination(_iFace.GetInteractionDestination()))
-            {
-                NavMesh.SamplePosition(_iFace.GetInteractionDestination(), out NavMeshHit hit, MESH_SEARCH_AREA, NavMesh.AllAreas);
-                _nav.SetDestination(hit.position);
-            }
-
-            _nav.isStopped = false;
-
+            GoToObject(_goal);
             StartCheckingDestination();
         }
         else
@@ -432,7 +391,6 @@ public class Unit : MonoBehaviour
     {
         while (true)
         {
-            Debug.Log("Resource Check");
             yield return _destinationCheckDelay;
 
             if (UnitData.UnitType == UnitType.FARMER && _designatedFarm != null)
@@ -440,10 +398,7 @@ public class Unit : MonoBehaviour
                 if (_designatedFarm.GetComponent<WheatResource>().IsHarvestable() ||
                     _designatedFarm.GetComponent<WheatResource>().IsHarvested())
                 {
-                    _goal = _designatedFarm;
-                    _iFace = _goal.GetComponent<IBuildingInteraction>();
-                    _nav.SetDestination(_iFace.GetInteractionDestination());
-                    _nav.isStopped = false;
+                    GoToObject(_designatedFarm);
                     CurrentActivity = UnitActivity.GOING_TO_FARM;
                     StartCheckingDestination();
                     yield break;
