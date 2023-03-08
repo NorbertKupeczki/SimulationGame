@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering.Universal;
 using static GameData;
 
 public class Unit : MonoBehaviour
@@ -37,7 +38,7 @@ public class Unit : MonoBehaviour
     private GameObject _designatedFarm = null;
     private GameObject _tool;
 
-    // private Queue<UnitActivity> _taskQueue;
+    private WaitForSeconds _replenishDelay = new WaitForSeconds(REPLENISH_DELAY);
 
     private void Awake()
     {   
@@ -85,18 +86,21 @@ public class Unit : MonoBehaviour
             else if (_iFace.GetBuildingType() == UnitData.UnitBehaviour.DropOffBuilding ||
                      _iFace.GetBuildingType() == BuildingType.CASTLE)
             {
-
                 CurrentActivity = UnitData.UnitBehaviour.UnloadingActivity;
                 StartCoroutine(UnitData.UnitBehaviour.UnloadResource(OnResourceUnloadingDone));
             }
-            else if (_iFace.GetBuildingType() == BuildingType.HOUSE)
+            else if (_iFace.GetBuildingType() == BuildingType.HOUSE &&
+                     CurrentActivity == UnitActivity.GOING_TO_REST)
             {
                 CurrentActivity = UnitActivity.RESTING;
+                StartCoroutine(Sleep());
                 ToggleVisibility(false);
             }
-            else if (_iFace.GetBuildingType() == BuildingType.WELL)
+            else if (_iFace.GetBuildingType() == BuildingType.WELL &&
+                     CurrentActivity == UnitActivity.GOING_TO_DRINK)
             {
                 CurrentActivity = UnitActivity.DRINKING;
+                StartCoroutine(Drink());
             }
 
             _nav.isStopped = true;
@@ -128,7 +132,8 @@ public class Unit : MonoBehaviour
             _designatedFarm.GetComponent<WheatResource>().UnregisterFarmer();
             _designatedFarm = null;
         }
-
+        ToggleVisibility(true);
+        StopAllCoroutines();
         UnitData.UnitBehaviour.InitManagers();
         InitTool();
         CurrentActivity = UnitActivity.IDLE;
@@ -167,18 +172,7 @@ public class Unit : MonoBehaviour
 
     private void OnUpdateThirst()
     {
-        if (CurrentActivity == UnitActivity.DRINKING &&
-            _iFace.GetBuildingType() == BuildingType.WELL)
-        {
-            Water += WATER_GAIN;
-
-            if (Water >= 100)
-            {
-                Water = 100;
-                CurrentActivity = GetNextTask();
-            }
-        }
-        else
+        if (CurrentActivity != UnitActivity.DRINKING)
         {
             Water -= Random.Range(WATER_LOSS_MIN, WATER_LOSS_MAX);
         }
@@ -186,19 +180,7 @@ public class Unit : MonoBehaviour
 
     private void OnUpdateFatigue()
     {
-        if (CurrentActivity == UnitActivity.RESTING &&
-            _iFace.GetBuildingType() == BuildingType.HOUSE)
-        {
-            Energy += ENERGY_GAIN;
-
-            if (Energy >= 100)
-            {
-                Energy = 100;
-                ToggleVisibility(true);
-                CurrentActivity = GetNextTask();
-            }
-        }
-        else
+        if (CurrentActivity != UnitActivity.RESTING)
         {
             Energy -= Random.Range(ENERGY_LOSS_MIN, ENERGY_LOSS_MAX);
         }
@@ -215,9 +197,12 @@ public class Unit : MonoBehaviour
 
     private void OnResourceUnloadingDone()
     {
-        UnitData.UnitBehaviour.AddResourceToStockpile(Resources);
-        Resources = 0;
-        _iFace.InteractWithBuilding();
+        if (Resources > 0)
+        {
+            UnitData.UnitBehaviour.AddResourceToStockpile(Resources, _goal.transform.position);
+            Resources = 0;
+            _iFace.InteractWithBuilding();
+        }
         _nav.isStopped = false;
         CurrentActivity = GetNextTask();
     }
@@ -423,5 +408,30 @@ public class Unit : MonoBehaviour
                 yield break;
             }
         }
+    }
+
+    private IEnumerator Drink()
+    {
+        while (Water <= 100)
+        {
+            yield return _replenishDelay;
+            Water += WATER_GAIN;
+        }
+        Water = 100;
+        CurrentActivity = GetNextTask();
+        yield break;
+    }
+
+    private IEnumerator Sleep()
+    {
+        while(Energy <= 100)
+        {
+            yield return _replenishDelay;
+            Energy += ENERGY_GAIN;
+        }
+        Energy = 100;
+        ToggleVisibility(true);
+        CurrentActivity = GetNextTask();
+        yield break;
     }
 }

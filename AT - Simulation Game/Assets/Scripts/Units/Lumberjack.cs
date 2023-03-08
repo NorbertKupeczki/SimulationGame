@@ -9,8 +9,9 @@ public class Lumberjack : UnitBehaviour
     
     private WaitForSeconds _woodcuttingTime = new WaitForSeconds(WOODCUTTING_TIME);
 
-    public override void AddResourceToStockpile(int value)
+    public override void AddResourceToStockpile(int value, Vector3 position)
     {
+        _ui.StartWorldFloatingText(position, value + " Wood");
         _resourceManager.GainWood(value);
     }
 

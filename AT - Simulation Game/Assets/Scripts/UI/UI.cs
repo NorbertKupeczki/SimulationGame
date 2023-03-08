@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,24 +8,14 @@ public class UI : MonoBehaviour
     [SerializeField] GraphicRaycaster _graphicRaycaster;
     [SerializeField] EventSystem _eventSystem;
     [SerializeField] TextMeshProUGUI _tooltipText;
-    [SerializeField] FloatingText _insufficientResourcesPrefab;
+    [SerializeField] FloatingText _floatingText;
+    [SerializeField] FloatingWorldText _floatingWorldText;
+    [SerializeField] Camera _camera;
 
     private void Awake()
     {
         _graphicRaycaster = GetComponent<GraphicRaycaster>();
         _tooltipText.enabled = false;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void TestClick()
@@ -47,7 +35,13 @@ public class UI : MonoBehaviour
 
     public void StartFloatText(string text)
     {
-        FloatingText newText = Instantiate(_insufficientResourcesPrefab, gameObject.transform);
+        FloatingText newText = Instantiate(_floatingText, gameObject.transform);
         newText.SetText(text);
+    }
+
+    public void StartWorldFloatingText(Vector3 position, string text)
+    {
+        FloatingWorldText newText = Instantiate(_floatingWorldText, gameObject.transform);
+        newText.InitText(_camera, position, text);
     }
 }

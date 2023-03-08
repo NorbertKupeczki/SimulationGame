@@ -3,9 +3,16 @@ using UnityEngine;
 public static class GameData
 {
     public const float MESH_SEARCH_AREA = 1.5f;
+    public const float GOLD_GENERATION_DELAY = 5.0f;
+    public const int GOLD_PER_TICK = 5;
+
+    public const int TRADE_BASE_AMOUNT = 50;
+    public const float TRADE_MULTIPLIER = 0.5f;
 
     public const float THIRST_THRESHOLD = 30.0f;
     public const float FATIGUE_THRESHOLD = 30.0f;
+
+    public const float REPLENISH_DELAY = 0.5f;
 
     public const float WATER_LOSS_MIN = 1.8f;
     public const float WATER_LOSS_MAX = 3.4f;
@@ -13,8 +20,8 @@ public static class GameData
     public const float ENERGY_LOSS_MIN = 0.5f;
     public const float ENERGY_LOSS_MAX = 1.2f;
 
-    public const float WATER_GAIN = 40.0f;
-    public const float ENERGY_GAIN = 10.0f;
+    public const float WATER_GAIN = 12.0f;
+    public const float ENERGY_GAIN = 3.0f;
 
     public const float SPEED_PENALTY = 0.25f;
 
@@ -32,6 +39,8 @@ public static class GameData
     public const float REFUND_FACTOR = 0.5f;
 
     public const float DESTINATION_CHECK_DELAY = 0.2f;
+
+    public const int WORKER_COST = 25;
 
     public enum UnitType
     {

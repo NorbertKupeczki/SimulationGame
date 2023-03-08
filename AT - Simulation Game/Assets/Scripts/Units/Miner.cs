@@ -8,8 +8,9 @@ public class Miner : UnitBehaviour
 {
     private WaitForSeconds _minintTime = new WaitForSeconds(MINING_TIME);
 
-    public override void AddResourceToStockpile(int value)
+    public override void AddResourceToStockpile(int value, Vector3 position)
     {
+        _ui.StartWorldFloatingText(position, value + " Ore");
         _resourceManager.GainOre(value);
     }
 

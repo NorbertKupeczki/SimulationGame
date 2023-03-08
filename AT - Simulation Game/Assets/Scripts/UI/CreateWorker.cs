@@ -6,15 +6,27 @@ public class CreateWorker : MonoBehaviour
     [SerializeField] private SelectionMarker _selection;
     [SerializeField] private UnitManager _unitManager;
 
+    private ResourceManager _rm;
+    private UI _ui;
+
     private void Start()
     {
         _selection = FindObjectOfType<SelectionMarker>();
         _unitManager = FindObjectOfType<UnitManager>();
+        _rm = FindObjectOfType<ResourceManager>();
+        _ui = FindObjectOfType<UI>();
     }
 
     public void CreateWorkerUnit()
     {
-        _unitManager.CreateWorker?.Invoke(_selection.GetInteractionPointTransform());
+        if(_rm.SpendWheat(WORKER_COST))
+        {
+            _unitManager.CreateWorker?.Invoke(_selection.GetInteractionPointTransform());
+        }
+        else
+        {
+            _ui.StartFloatText("You need " + WORKER_COST + " wheat!");
+        }
     }
 
     public void CreateLumberjack()

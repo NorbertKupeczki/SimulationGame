@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using TMPro.Examples;
 using UnityEngine;
 using static GameData;
 
@@ -9,6 +9,11 @@ public class Market : MonoBehaviour, IBuildingInteraction, ISelectable
     [SerializeField] private BuildingSO _buildingData;
     [SerializeField] private GameObject _buttonsPanel;
 
+    private WaitForSeconds _goldGenerationDelay = new WaitForSeconds(GOLD_GENERATION_DELAY);
+
+    private ResourceManager _rm;
+    private UI _ui;
+
     private void Awake()
     {
         _iPoint = GetComponentInChildren<InteractionPoint>();
@@ -17,6 +22,10 @@ public class Market : MonoBehaviour, IBuildingInteraction, ISelectable
     private void Start()
     {
         _buttonsPanel = FindObjectOfType<BuildingsButtonManager>().GetPanelOfBuildingType(_buildingData.buildingType);
+        _rm = FindObjectOfType<ResourceManager>();
+        _ui = FindObjectOfType<UI>();
+
+        StartCoroutine(GeneratingGold());
     }
 
     public Collider GetInteractionCollider()
@@ -74,4 +83,14 @@ public class Market : MonoBehaviour, IBuildingInteraction, ISelectable
     {
         return _buildingData;
     }
+
+    private IEnumerator GeneratingGold()
+    {
+        while(true)
+        {
+            yield return _goldGenerationDelay;
+            _ui.StartWorldFloatingText(transform.position, "5 Gold");
+            _rm.GainCoins(GOLD_PER_TICK);
+        }
+    }    
 }

@@ -17,6 +17,7 @@ public abstract class UnitBehaviour : ScriptableObject
 
     [HideInInspector] public BuildingManager _buildingManager;
     [HideInInspector] public ResourceManager _resourceManager;
+    [HideInInspector] public UI _ui;
 
     private WaitForSeconds _unloadingTime = new WaitForSeconds(UNLOADING_TIME);
 
@@ -24,11 +25,12 @@ public abstract class UnitBehaviour : ScriptableObject
     {
         _buildingManager = FindObjectOfType<BuildingManager>();
         _resourceManager = FindObjectOfType<ResourceManager>();
+        _ui = FindObjectOfType<UI>();
     }
 
     public abstract IEnumerator CollectingResource(Action<int> callBack);
 
-    public abstract void AddResourceToStockpile(int value);
+    public abstract void AddResourceToStockpile(int value, Vector3 position);
 
     public IEnumerator UnloadResource(Action callBack)
     {

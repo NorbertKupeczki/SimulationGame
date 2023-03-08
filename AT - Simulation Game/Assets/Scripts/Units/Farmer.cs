@@ -9,8 +9,9 @@ public class Farmer : UnitBehaviour
     private WaitForSeconds _harvestingTime = new WaitForSeconds(HARVESTING_TIME);
     private WaitForSeconds _plowingTime = new WaitForSeconds(SOWING_WHEAT_TIME);
 
-    public override void AddResourceToStockpile(int value)
+    public override void AddResourceToStockpile(int value, Vector3 position)
     {
+        _ui.StartWorldFloatingText(position, value + " Wheat");
         _resourceManager.GainWheat(value);
     }
 
