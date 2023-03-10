@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitName: Miner
   UnitType: 2
-  Speed: 2
+  Speed: 1.5
   Color: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 0}
   UnitBehaviour: {fileID: 11400000, guid: faba8d759c7ab6941b28b9e636e4bc19, type: 2}
   Tool: {fileID: 919132149155446097, guid: ee0254e17b029e74da9dfb2df4c3becd, type: 3}

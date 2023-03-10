@@ -5,12 +5,16 @@ using UnityEngine.UI;
 
 public class UI : MonoBehaviour
 {
+    [Header ("Default options")]
     [SerializeField] GraphicRaycaster _graphicRaycaster;
     [SerializeField] EventSystem _eventSystem;
     [SerializeField] TextMeshProUGUI _tooltipText;
+    [Space]
+    [Header ("Floating Text")]
+    [SerializeField] Camera _camera;
     [SerializeField] FloatingText _floatingText;
     [SerializeField] FloatingWorldText _floatingWorldText;
-    [SerializeField] Camera _camera;
+    [SerializeField] Canvas _worldSpaceFloatingTextCanvas;
 
     private void Awake()
     {
@@ -41,7 +45,7 @@ public class UI : MonoBehaviour
 
     public void StartWorldFloatingText(Vector3 position, string text)
     {
-        FloatingWorldText newText = Instantiate(_floatingWorldText, gameObject.transform);
+        FloatingWorldText newText = Instantiate(_floatingWorldText, _worldSpaceFloatingTextCanvas.transform);
         newText.InitText(_camera, position, text);
     }
 }
