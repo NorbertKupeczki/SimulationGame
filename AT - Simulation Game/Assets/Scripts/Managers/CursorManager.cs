@@ -25,7 +25,7 @@ public class CursorManager : MonoBehaviour
     {
         DEFAULT = 0,
         PLACEMENT = 1,
-        DEMOLISH = 3
+        DEMOLISH = 2
     }
     
     private void Awake()

@@ -1,10 +1,6 @@
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
-using UnityEngine.UI;
 
 public class CameraHandler : MonoBehaviour
 {

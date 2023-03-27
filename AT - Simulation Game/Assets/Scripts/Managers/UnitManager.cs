@@ -47,7 +47,6 @@ public class UnitManager : MonoBehaviour
         DemoteUnit += OnDemoteUnit;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         _buildingManager = FindObjectOfType<BuildingManager>();
@@ -56,12 +55,6 @@ public class UnitManager : MonoBehaviour
         FindAllExistingUnits();
         StartCoroutine(UpdateThirst(3.0f));
         StartCoroutine(UpdateFatigue(3.0f));
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private List<Unit> AccessList(UnitType unitType)

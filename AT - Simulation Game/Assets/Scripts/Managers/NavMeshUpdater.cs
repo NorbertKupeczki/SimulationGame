@@ -39,5 +39,6 @@ public class NavMeshUpdater : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         RefreshNavMesh();
+        yield break;
     }
 }
